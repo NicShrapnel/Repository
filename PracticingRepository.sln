@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio 2013
+VisualStudioVersion = 12.0.21005.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PracticingRepository", "PracticingRepository\PracticingRepository.csproj", "{6DBC3516-CAF0-42A3-94B2-A7204868933C}"
 EndProject
@@ -10,6 +10,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DAL_EntityFramework_Repository_Logging", "DAL_EntityFramework_Repository_Logging\DAL_EntityFramework_Repository_Logging.csproj", "{F608942F-DEAB-45DD-A651-4EC2DC7670B1}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Repository_UnitTests", "Repository_UnitTests\Repository_UnitTests.csproj", "{7FED5C1F-3CB9-4089-89C4-CCCCA4B0BCCC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimulationExternalProject_DAL", "SimulationExternalProject_DAL\SimulationExternalProject_DAL.csproj", "{C43D5DB3-02F5-42C8-AAA9-AD71E9FFB31E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{7FED5C1F-3CB9-4089-89C4-CCCCA4B0BCCC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7FED5C1F-3CB9-4089-89C4-CCCCA4B0BCCC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7FED5C1F-3CB9-4089-89C4-CCCCA4B0BCCC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C43D5DB3-02F5-42C8-AAA9-AD71E9FFB31E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C43D5DB3-02F5-42C8-AAA9-AD71E9FFB31E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C43D5DB3-02F5-42C8-AAA9-AD71E9FFB31E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C43D5DB3-02F5-42C8-AAA9-AD71E9FFB31E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

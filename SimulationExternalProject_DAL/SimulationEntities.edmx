@@ -1,0 +1,649 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="ProLawModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Matters">
+          <Key>
+            <PropertyRef Name="Matters" />
+          </Key>
+          <Property Name="Matters" Type="varchar" MaxLength="36" Nullable="false" />
+          <Property Name="MatterID" Type="varchar" MaxLength="25" Nullable="false" />
+          <Property Name="ShortDesc" Type="varchar" MaxLength="70" />
+          <Property Name="AreaOfLaw" Type="varchar" MaxLength="40" />
+          <Property Name="MatterType" Type="varchar" MaxLength="40" Nullable="false" />
+          <Property Name="OpenedDate" Type="datetime" />
+          <Property Name="ClientSort" Type="varchar" MaxLength="70" />
+          <Property Name="MatterIDSort" Type="varchar" MaxLength="50" />
+          <Property Name="ClientPronoun" Type="varchar" MaxLength="1" />
+          <Property Name="OpposingPronoun" Type="varchar" MaxLength="1" />
+          <Property Name="Status" Type="varchar" MaxLength="40" />
+          <Property Name="StatusDate" Type="datetime" />
+          <Property Name="Entered" Type="datetime" />
+          <Property Name="Rates" Type="varchar" MaxLength="36" />
+          <Property Name="Tasks" Type="varchar" MaxLength="36" />
+          <Property Name="StmnFormats" Type="varchar" MaxLength="36" />
+          <Property Name="PreBillStmnFormats" Type="varchar" MaxLength="36" />
+          <Property Name="BillFreq" Type="varchar" MaxLength="25" />
+          <Property Name="AddingProfessionals" Type="varchar" MaxLength="36" />
+          <Property Name="AddingDateTime" Type="datetime" />
+          <Property Name="FirmPercentage" Type="numeric" Precision="7" Scale="4" />
+          <Property Name="BudgetFees" Type="numeric" Precision="12" Scale="2" />
+          <Property Name="BudgetHours" Type="numeric" Precision="12" Scale="2" />
+          <Property Name="BudgetHardCosts" Type="numeric" Precision="12" Scale="2" />
+          <Property Name="BudgetSoftCosts" Type="numeric" Precision="12" Scale="2" />
+          <Property Name="WDFees" Type="varchar" MaxLength="1" />
+          <Property Name="WDHardCosts" Type="varchar" MaxLength="1" />
+          <Property Name="WDSoftCosts" Type="varchar" MaxLength="1" />
+          <Property Name="PeriodicRetainer" Type="numeric" Precision="12" Scale="2" />
+          <Property Name="StmnRTF" Type="varchar" MaxLength="36" />
+          <Property Name="EventTypeRules" Type="varchar" MaxLength="36" />
+          <Property Name="EventTypeRules2" Type="varchar" MaxLength="16" />
+          <Property Name="SecurityGroupView" Type="varchar" MaxLength="36" />
+          <Property Name="SecurityGroupChange" Type="varchar" MaxLength="36" />
+          <Property Name="SecurityGroupDelete" Type="varchar" MaxLength="36" />
+          <Property Name="Description" Type="text" />
+          <Property Name="Notes" Type="text" />
+          <Property Name="IsReverseView" Type="varchar" MaxLength="1" />
+          <Property Name="BillingGroup" Type="int" />
+          <Property Name="ClientID" Type="varchar" MaxLength="15" />
+          <Property Name="ClientIDSort" Type="varchar" MaxLength="15" />
+          <Property Name="SecurityGroupPortalView" Type="varchar" MaxLength="36" />
+          <Property Name="SettlementStmnFormats" Type="varchar" MaxLength="36" />
+          <Property Name="SettleTrustAccounts" Type="varchar" MaxLength="36" />
+          <Property Name="SettleCashAccounts" Type="varchar" MaxLength="36" />
+          <Property Name="WFStatus" Type="int" Nullable="false" />
+          <Property Name="IsApplySecurity" Type="varchar" MaxLength="1" />
+          <Property Name="BillFreqCosts" Type="varchar" MaxLength="25" />
+          <Property Name="MatterNum" Type="varchar" MaxLength="25" />
+          <Property Name="SubMatterNum" Type="varchar" MaxLength="10" />
+          <Property Name="ClosingWFStatus" Type="int" Nullable="false" />
+          <Property Name="ILSKey" Type="varchar" MaxLength="36" />
+          <Property Name="QSUBAREAOFLAW" Type="varchar" MaxLength="40" />
+          <Property Name="QFORECLOSURESAL" Type="datetime" />
+          <Property Name="QDATEREFERRED" Type="datetime" />
+          <Property Name="QWELLSBKASSOCIA" Type="varchar" MaxLength="40" />
+          <Property Name="QLITIGATIONATTO" Type="varchar" MaxLength="40" />
+          <Property Name="QLASTFOURDIGITS" Type="varchar" MaxLength="20" />
+          <Property Name="QNONBILLABLESTA" Type="varchar" MaxLength="40" />
+          <Property Name="LpsNTRID" Type="int" />
+          <Property Name="LpsDocumentDate" Type="datetime" />
+          <Property Name="QLPSPROCESSNAME" Type="text" />
+          <Property Name="LpsDocumentAttemptDate" Type="datetime" />
+          <Property Name="LpsDocumentAttemptCount" Type="int" />
+          <Property Name="QWELLSSOURCE" Type="varchar" MaxLength="40" />
+          <Property Name="QLPSSERVICERNAM" Type="varchar" MaxLength="50" />
+          <Property Name="LpsDocsRecovered" Type="datetime" />
+          <Property Name="LpsDocsRecoveryAttempted" Type="datetime" />
+          <Property Name="NetDirectorCaseId" Type="varchar" MaxLength="50" />
+          <Property Name="QFROMTHISMATTER" Type="varchar" MaxLength="50" />
+          <Property Name="QFORECLOSURESTA" Type="varchar" MaxLength="40" />
+          <Property Name="QTITLECURATIVES" Type="varchar" MaxLength="40" />
+          <Property Name="QREOSTATUS" Type="varchar" MaxLength="40" />
+          <Property Name="QDISPOSITIONOFR2" Type="varchar" MaxLength="40" />
+          <Property Name="QPNMACREFERRALR" Type="datetime" />
+          <Property Name="QBARDATEVERIFIE" Type="datetime" />
+          <Property Name="QACQUISITIONDAT" Type="datetime" />
+          <Property Name="QMATTERKEYWORD" Type="varchar" MaxLength="20" />
+          <Property Name="QSPECIALPROJECT" Type="varchar" MaxLength="1" />
+          <Property Name="QBUDGETCONTROL" Type="varchar" MaxLength="1" Nullable="false" />
+        </EntityType>
+        <EntityType Name="MattersQFORECLOSUR5">
+          <Key>
+            <PropertyRef Name="MattersQFORECLOSUR5" />
+          </Key>
+          <Property Name="MattersQFORECLOSUR5" Type="varchar" MaxLength="36" Nullable="false" />
+          <Property Name="MattersQFORECLOSUREPRO" Type="varchar" MaxLength="36" />
+          <Property Name="AddingDateTime" Type="datetime" />
+          <Property Name="CascadeOrder" Type="int" />
+          <Property Name="QTIRFEDTAXLIEN" Type="datetime" />
+          <Property Name="QTIRFEDTAXLIENPROF" Type="varchar" MaxLength="36" />
+          <Property Name="QTIRDELQTAXES" Type="datetime" />
+          <Property Name="QTIRDELQTAXESPROF" Type="varchar" MaxLength="36" />
+          <Property Name="QTIRTITLEDEF" Type="datetime" />
+          <Property Name="QTIRTITLEDEFPROF" Type="varchar" MaxLength="36" />
+          <Property Name="QTIRTCREQUESTED" Type="datetime" />
+          <Property Name="QTIRTCREQUESTEDPROF" Type="varchar" MaxLength="36" />
+          <Property Name="QTIRTCPROCASS" Type="datetime" />
+          <Property Name="QTIRTCPROCASSPROF" Type="varchar" MaxLength="36" />
+          <Property Name="QTIRPASS" Type="datetime" />
+          <Property Name="QTIRDUPLICATE" Type="datetime" />
+          <Property Name="QTIRFCCLOSED" Type="datetime" />
+          <Property Name="QTIRTCPROCPASS" Type="varchar" MaxLength="36" />
+          <Property Name="QTIRTCPROCDUP" Type="varchar" MaxLength="36" />
+          <Property Name="QTCPROCFCCLOSE" Type="varchar" MaxLength="36" />
+        </EntityType>
+        <EntityType Name="MattersQFORECLOSUR6">
+          <Key>
+            <PropertyRef Name="MattersQFORECLOSUR6" />
+          </Key>
+          <Property Name="MattersQFORECLOSUR6" Type="varchar" MaxLength="36" Nullable="false" />
+          <Property Name="MattersQFORECLOSUREPRO" Type="varchar" MaxLength="36" />
+          <Property Name="AddingDateTime" Type="datetime" />
+          <Property Name="CascadeOrder" Type="int" />
+          <Property Name="QTOTITLEREQDATE" Type="datetime" />
+          <Property Name="QTOTITLERECVDDATE" Type="datetime" />
+          <Property Name="QTOTITLETYPE" Type="varchar" MaxLength="40" />
+          <Property Name="QTOTITLEPROVIDER" Type="varchar" MaxLength="40" />
+          <Property Name="QTOTITLEEFFECTDATE" Type="datetime" />
+          <Property Name="QTOTITLERPTTOCLIENT" Type="datetime" />
+          <Property Name="QTOTITLEEXAMDATE" Type="datetime" />
+          <Property Name="QTOTITLEAPPROVED" Type="datetime" />
+          <Property Name="TITL_Order_OrderID" Type="int" />
+          <Property Name="TITL_Order_ExamOnlyTriggered" Type="datetime" />
+          <Property Name="QTOTITLERUSH" Type="varchar" MaxLength="1" />
+          <Property Name="QTONOTES" Type="varchar" MaxLength="1500" />
+        </EntityType>
+        <EntityType Name="MattersQFORECLOSUREPRO">
+          <Key>
+            <PropertyRef Name="MattersQFORECLOSUREPRO" />
+          </Key>
+          <Property Name="MattersQFORECLOSUREPRO" Type="varchar" MaxLength="36" Nullable="false" />
+          <Property Name="Matters" Type="varchar" MaxLength="36" />
+          <Property Name="QASSIGNMENTORDE" Type="datetime" />
+          <Property Name="QASSIGNMENTRECE" Type="datetime" />
+          <Property Name="QASSIGNMENTSENT" Type="datetime" />
+          <Property Name="QFDCPALETTERSEN" Type="datetime" />
+          <Property Name="QFTLNOTICE" Type="datetime" />
+          <Property Name="QHUDOCCLETTER" Type="datetime" />
+          <Property Name="QNOICEOFPENDING" Type="datetime" />
+          <Property Name="QPUBLICATIONDAT" Type="datetime" />
+          <Property Name="QSALEMONTH" Type="varchar" MaxLength="20" />
+          <Property Name="QSUBLIENNOTICE" Type="datetime" />
+          <Property Name="QTEAMTITLEREVIE" Type="datetime" />
+          <Property Name="QTITLEEXAMORDER" Type="datetime" />
+          <Property Name="QTITLEEXAMRECEI" Type="datetime" />
+          <Property Name="QSALEYEAR" Type="varchar" MaxLength="20" />
+          <Property Name="QTITLEAPPROVEDF" Type="datetime" />
+          <Property Name="QVAAPPRAISALCOM" Type="datetime" />
+          <Property Name="QVAAPPRAISALORD" Type="datetime" />
+          <Property Name="QHUDFIRSTACTION" Type="datetime" />
+          <Property Name="QWELLSPRESALECH" Type="datetime" />
+          <Property Name="QFDCPADATAVALID" Type="datetime" />
+          <Property Name="QNOSDATAVALIDAT" Type="datetime" />
+          <Property Name="QFNMALETTERSENT" Type="datetime" />
+          <Property Name="QBREACHLETTERSE" Type="datetime" />
+          <Property Name="QBREACHLETTEREX" Type="datetime" />
+          <Property Name="QWELLS10DAYCHEC" Type="datetime" />
+          <Property Name="QCHASELETTERSEN" Type="datetime" />
+          <Property Name="QNOTEREVIEWED" Type="datetime" />
+          <Property Name="QREBREACHNEEDED" Type="varchar" MaxLength="40" />
+          <Property Name="QVALIDBREACHLET" Type="datetime" />
+          <Property Name="QREBREACHAMOUNT" Type="numeric" Precision="12" Scale="2" />
+          <Property Name="QREBREACHFEEAPP" Type="datetime" />
+          <Property Name="QREBREACHREINST" Type="datetime" />
+          <Property Name="QCORRECTIVEASSI" Type="varchar" MaxLength="40" />
+          <Property Name="QCORRECTIVEASSI2" Type="datetime" />
+          <Property Name="QCORRECTIVEASSI23" Type="datetime" />
+          <Property Name="QCORRECTIVEASSI234" Type="datetime" />
+          <Property Name="QFTLNOTICENEEDE" Type="varchar" MaxLength="40" />
+          <Property Name="QTYPEOFASSIGNME" Type="varchar" MaxLength="40" />
+          <Property Name="QADPUBLICATIONC" Type="datetime" />
+          <Property Name="QADRECEIPTCONFI" Type="datetime" />
+          <Property Name="QADREVIEWED" Type="datetime" />
+          <Property Name="QADSUBMITTED" Type="datetime" />
+          <Property Name="QBIDREVIEWEDUPL" Type="datetime" />
+          <Property Name="QHAMPCERTIFICAT" Type="datetime" />
+          <Property Name="QSALEPOSTPONEDR" Type="varchar" MaxLength="40" />
+          <Property Name="QSALERESCINDREA" Type="varchar" MaxLength="40" />
+          <Property Name="QSALESTOPPEDREA" Type="varchar" MaxLength="40" />
+          <Property Name="QSOLDTO" Type="varchar" MaxLength="40" />
+          <Property Name="QBIDINSTRUCTION" Type="datetime" />
+          <Property Name="QDOCUMENTSNEEDE" Type="varchar" MaxLength="40" />
+          <Property Name="QREESEREVIEWCOM" Type="datetime" />
+          <Property Name="QTITLEEXAMTOCLI" Type="datetime" />
+          <Property Name="QAOMCHAINAPPROV" Type="datetime" />
+          <Property Name="QNOPFCLETTERSUP" Type="datetime" />
+          <Property Name="QPRESALECERTIFI" Type="datetime" />
+          <Property Name="QSCRACERTIFICAT" Type="datetime" />
+          <Property Name="QPUBAFFIDAVITRC" Type="datetime" />
+          <Property Name="QSCHEDULEDPUBLI" Type="datetime" />
+          <Property Name="QPUBAFFIDAVITUPLOAD" Type="datetime" />
+        </EntityType>
+        <EntityContainer Name="ProLawModelStoreContainer">
+          <EntitySet Name="Matters" EntityType="Self.Matters" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="MattersQFORECLOSUR5" EntityType="Self.MattersQFORECLOSUR5" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="MattersQFORECLOSUR6" EntityType="Self.MattersQFORECLOSUR6" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="MattersQFORECLOSUREPRO" EntityType="Self.MattersQFORECLOSUREPRO" Schema="dbo" store:Type="Tables" />
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="ProLawModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Matters">
+          <Key>
+            <PropertyRef Name="Matters1" />
+          </Key>
+          <Property Name="Matters1" Type="String" MaxLength="36" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="MatterID" Type="String" MaxLength="25" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="ShortDesc" Type="String" MaxLength="70" FixedLength="false" Unicode="false" />
+          <Property Name="AreaOfLaw" Type="String" MaxLength="40" FixedLength="false" Unicode="false" />
+          <Property Name="MatterType" Type="String" MaxLength="40" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="OpenedDate" Type="DateTime" Precision="3" />
+          <Property Name="ClientSort" Type="String" MaxLength="70" FixedLength="false" Unicode="false" />
+          <Property Name="MatterIDSort" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="ClientPronoun" Type="String" MaxLength="1" FixedLength="false" Unicode="false" />
+          <Property Name="OpposingPronoun" Type="String" MaxLength="1" FixedLength="false" Unicode="false" />
+          <Property Name="Status" Type="String" MaxLength="40" FixedLength="false" Unicode="false" />
+          <Property Name="StatusDate" Type="DateTime" Precision="3" />
+          <Property Name="Entered" Type="DateTime" Precision="3" />
+          <Property Name="Rates" Type="String" MaxLength="36" FixedLength="false" Unicode="false" />
+          <Property Name="Tasks" Type="String" MaxLength="36" FixedLength="false" Unicode="false" />
+          <Property Name="StmnFormats" Type="String" MaxLength="36" FixedLength="false" Unicode="false" />
+          <Property Name="PreBillStmnFormats" Type="String" MaxLength="36" FixedLength="false" Unicode="false" />
+          <Property Name="BillFreq" Type="String" MaxLength="25" FixedLength="false" Unicode="false" />
+          <Property Name="AddingProfessionals" Type="String" MaxLength="36" FixedLength="false" Unicode="false" />
+          <Property Name="AddingDateTime" Type="DateTime" Precision="3" />
+          <Property Name="FirmPercentage" Type="Decimal" Precision="7" Scale="4" />
+          <Property Name="BudgetFees" Type="Decimal" Precision="12" Scale="2" />
+          <Property Name="BudgetHours" Type="Decimal" Precision="12" Scale="2" />
+          <Property Name="BudgetHardCosts" Type="Decimal" Precision="12" Scale="2" />
+          <Property Name="BudgetSoftCosts" Type="Decimal" Precision="12" Scale="2" />
+          <Property Name="WDFees" Type="String" MaxLength="1" FixedLength="false" Unicode="false" />
+          <Property Name="WDHardCosts" Type="String" MaxLength="1" FixedLength="false" Unicode="false" />
+          <Property Name="WDSoftCosts" Type="String" MaxLength="1" FixedLength="false" Unicode="false" />
+          <Property Name="PeriodicRetainer" Type="Decimal" Precision="12" Scale="2" />
+          <Property Name="StmnRTF" Type="String" MaxLength="36" FixedLength="false" Unicode="false" />
+          <Property Name="EventTypeRules" Type="String" MaxLength="36" FixedLength="false" Unicode="false" />
+          <Property Name="EventTypeRules2" Type="String" MaxLength="16" FixedLength="false" Unicode="false" />
+          <Property Name="SecurityGroupView" Type="String" MaxLength="36" FixedLength="false" Unicode="false" />
+          <Property Name="SecurityGroupChange" Type="String" MaxLength="36" FixedLength="false" Unicode="false" />
+          <Property Name="SecurityGroupDelete" Type="String" MaxLength="36" FixedLength="false" Unicode="false" />
+          <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Notes" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="IsReverseView" Type="String" MaxLength="1" FixedLength="false" Unicode="false" />
+          <Property Name="BillingGroup" Type="Int32" />
+          <Property Name="ClientID" Type="String" MaxLength="15" FixedLength="false" Unicode="false" />
+          <Property Name="ClientIDSort" Type="String" MaxLength="15" FixedLength="false" Unicode="false" />
+          <Property Name="SecurityGroupPortalView" Type="String" MaxLength="36" FixedLength="false" Unicode="false" />
+          <Property Name="SettlementStmnFormats" Type="String" MaxLength="36" FixedLength="false" Unicode="false" />
+          <Property Name="SettleTrustAccounts" Type="String" MaxLength="36" FixedLength="false" Unicode="false" />
+          <Property Name="SettleCashAccounts" Type="String" MaxLength="36" FixedLength="false" Unicode="false" />
+          <Property Name="WFStatus" Type="Int32" Nullable="false" />
+          <Property Name="IsApplySecurity" Type="String" MaxLength="1" FixedLength="false" Unicode="false" />
+          <Property Name="BillFreqCosts" Type="String" MaxLength="25" FixedLength="false" Unicode="false" />
+          <Property Name="MatterNum" Type="String" MaxLength="25" FixedLength="false" Unicode="false" />
+          <Property Name="SubMatterNum" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="ClosingWFStatus" Type="Int32" Nullable="false" />
+          <Property Name="ILSKey" Type="String" MaxLength="36" FixedLength="false" Unicode="false" />
+          <Property Name="QSUBAREAOFLAW" Type="String" MaxLength="40" FixedLength="false" Unicode="false" />
+          <Property Name="QFORECLOSURESAL" Type="DateTime" Precision="3" />
+          <Property Name="QDATEREFERRED" Type="DateTime" Precision="3" />
+          <Property Name="QWELLSBKASSOCIA" Type="String" MaxLength="40" FixedLength="false" Unicode="false" />
+          <Property Name="QLITIGATIONATTO" Type="String" MaxLength="40" FixedLength="false" Unicode="false" />
+          <Property Name="QLASTFOURDIGITS" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="QNONBILLABLESTA" Type="String" MaxLength="40" FixedLength="false" Unicode="false" />
+          <Property Name="LpsNTRID" Type="Int32" />
+          <Property Name="LpsDocumentDate" Type="DateTime" Precision="3" />
+          <Property Name="QLPSPROCESSNAME" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="LpsDocumentAttemptDate" Type="DateTime" Precision="3" />
+          <Property Name="LpsDocumentAttemptCount" Type="Int32" />
+          <Property Name="QWELLSSOURCE" Type="String" MaxLength="40" FixedLength="false" Unicode="false" />
+          <Property Name="QLPSSERVICERNAM" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="LpsDocsRecovered" Type="DateTime" Precision="3" />
+          <Property Name="LpsDocsRecoveryAttempted" Type="DateTime" Precision="3" />
+          <Property Name="NetDirectorCaseId" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="QFROMTHISMATTER" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="QFORECLOSURESTA" Type="String" MaxLength="40" FixedLength="false" Unicode="false" />
+          <Property Name="QTITLECURATIVES" Type="String" MaxLength="40" FixedLength="false" Unicode="false" />
+          <Property Name="QREOSTATUS" Type="String" MaxLength="40" FixedLength="false" Unicode="false" />
+          <Property Name="QDISPOSITIONOFR2" Type="String" MaxLength="40" FixedLength="false" Unicode="false" />
+          <Property Name="QPNMACREFERRALR" Type="DateTime" Precision="3" />
+          <Property Name="QBARDATEVERIFIE" Type="DateTime" Precision="3" />
+          <Property Name="QACQUISITIONDAT" Type="DateTime" Precision="3" />
+          <Property Name="QMATTERKEYWORD" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="QSPECIALPROJECT" Type="String" MaxLength="1" FixedLength="false" Unicode="false" />
+          <Property Name="QBUDGETCONTROL" Type="String" MaxLength="1" FixedLength="false" Unicode="false" Nullable="false" />
+        </EntityType>
+        <EntityType Name="MattersQFORECLOSUR5">
+          <Key>
+            <PropertyRef Name="MattersQFORECLOSUR51" />
+          </Key>
+          <Property Name="MattersQFORECLOSUR51" Type="String" MaxLength="36" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="MattersQFORECLOSUREPRO" Type="String" MaxLength="36" FixedLength="false" Unicode="false" />
+          <Property Name="AddingDateTime" Type="DateTime" Precision="3" />
+          <Property Name="CascadeOrder" Type="Int32" />
+          <Property Name="QTIRFEDTAXLIEN" Type="DateTime" Precision="3" />
+          <Property Name="QTIRFEDTAXLIENPROF" Type="String" MaxLength="36" FixedLength="false" Unicode="false" />
+          <Property Name="QTIRDELQTAXES" Type="DateTime" Precision="3" />
+          <Property Name="QTIRDELQTAXESPROF" Type="String" MaxLength="36" FixedLength="false" Unicode="false" />
+          <Property Name="QTIRTITLEDEF" Type="DateTime" Precision="3" />
+          <Property Name="QTIRTITLEDEFPROF" Type="String" MaxLength="36" FixedLength="false" Unicode="false" />
+          <Property Name="QTIRTCREQUESTED" Type="DateTime" Precision="3" />
+          <Property Name="QTIRTCREQUESTEDPROF" Type="String" MaxLength="36" FixedLength="false" Unicode="false" />
+          <Property Name="QTIRTCPROCASS" Type="DateTime" Precision="3" />
+          <Property Name="QTIRTCPROCASSPROF" Type="String" MaxLength="36" FixedLength="false" Unicode="false" />
+          <Property Name="QTIRPASS" Type="DateTime" Precision="3" />
+          <Property Name="QTIRDUPLICATE" Type="DateTime" Precision="3" />
+          <Property Name="QTIRFCCLOSED" Type="DateTime" Precision="3" />
+          <Property Name="QTIRTCPROCPASS" Type="String" MaxLength="36" FixedLength="false" Unicode="false" />
+          <Property Name="QTIRTCPROCDUP" Type="String" MaxLength="36" FixedLength="false" Unicode="false" />
+          <Property Name="QTCPROCFCCLOSE" Type="String" MaxLength="36" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="MattersQFORECLOSUR6">
+          <Key>
+            <PropertyRef Name="MattersQFORECLOSUR61" />
+          </Key>
+          <Property Name="MattersQFORECLOSUR61" Type="String" MaxLength="36" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="MattersQFORECLOSUREPRO" Type="String" MaxLength="36" FixedLength="false" Unicode="false" />
+          <Property Name="AddingDateTime" Type="DateTime" Precision="3" />
+          <Property Name="CascadeOrder" Type="Int32" />
+          <Property Name="QTOTITLEREQDATE" Type="DateTime" Precision="3" />
+          <Property Name="QTOTITLERECVDDATE" Type="DateTime" Precision="3" />
+          <Property Name="QTOTITLETYPE" Type="String" MaxLength="40" FixedLength="false" Unicode="false" />
+          <Property Name="QTOTITLEPROVIDER" Type="String" MaxLength="40" FixedLength="false" Unicode="false" />
+          <Property Name="QTOTITLEEFFECTDATE" Type="DateTime" Precision="3" />
+          <Property Name="QTOTITLERPTTOCLIENT" Type="DateTime" Precision="3" />
+          <Property Name="QTOTITLEEXAMDATE" Type="DateTime" Precision="3" />
+          <Property Name="QTOTITLEAPPROVED" Type="DateTime" Precision="3" />
+          <Property Name="TITL_Order_OrderID" Type="Int32" />
+          <Property Name="TITL_Order_ExamOnlyTriggered" Type="DateTime" Precision="3" />
+          <Property Name="QTOTITLERUSH" Type="String" MaxLength="1" FixedLength="false" Unicode="false" />
+          <Property Name="QTONOTES" Type="String" MaxLength="1500" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="MattersQFORECLOSUREPRO">
+          <Key>
+            <PropertyRef Name="MattersQFORECLOSUREPRO1" />
+          </Key>
+          <Property Name="MattersQFORECLOSUREPRO1" Type="String" MaxLength="36" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Matters" Type="String" MaxLength="36" FixedLength="false" Unicode="false" />
+          <Property Name="QASSIGNMENTORDE" Type="DateTime" Precision="3" />
+          <Property Name="QASSIGNMENTRECE" Type="DateTime" Precision="3" />
+          <Property Name="QASSIGNMENTSENT" Type="DateTime" Precision="3" />
+          <Property Name="QFDCPALETTERSEN" Type="DateTime" Precision="3" />
+          <Property Name="QFTLNOTICE" Type="DateTime" Precision="3" />
+          <Property Name="QHUDOCCLETTER" Type="DateTime" Precision="3" />
+          <Property Name="QNOICEOFPENDING" Type="DateTime" Precision="3" />
+          <Property Name="QPUBLICATIONDAT" Type="DateTime" Precision="3" />
+          <Property Name="QSALEMONTH" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="QSUBLIENNOTICE" Type="DateTime" Precision="3" />
+          <Property Name="QTEAMTITLEREVIE" Type="DateTime" Precision="3" />
+          <Property Name="QTITLEEXAMORDER" Type="DateTime" Precision="3" />
+          <Property Name="QTITLEEXAMRECEI" Type="DateTime" Precision="3" />
+          <Property Name="QSALEYEAR" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="QTITLEAPPROVEDF" Type="DateTime" Precision="3" />
+          <Property Name="QVAAPPRAISALCOM" Type="DateTime" Precision="3" />
+          <Property Name="QVAAPPRAISALORD" Type="DateTime" Precision="3" />
+          <Property Name="QHUDFIRSTACTION" Type="DateTime" Precision="3" />
+          <Property Name="QWELLSPRESALECH" Type="DateTime" Precision="3" />
+          <Property Name="QFDCPADATAVALID" Type="DateTime" Precision="3" />
+          <Property Name="QNOSDATAVALIDAT" Type="DateTime" Precision="3" />
+          <Property Name="QFNMALETTERSENT" Type="DateTime" Precision="3" />
+          <Property Name="QBREACHLETTERSE" Type="DateTime" Precision="3" />
+          <Property Name="QBREACHLETTEREX" Type="DateTime" Precision="3" />
+          <Property Name="QWELLS10DAYCHEC" Type="DateTime" Precision="3" />
+          <Property Name="QCHASELETTERSEN" Type="DateTime" Precision="3" />
+          <Property Name="QNOTEREVIEWED" Type="DateTime" Precision="3" />
+          <Property Name="QREBREACHNEEDED" Type="String" MaxLength="40" FixedLength="false" Unicode="false" />
+          <Property Name="QVALIDBREACHLET" Type="DateTime" Precision="3" />
+          <Property Name="QREBREACHAMOUNT" Type="Decimal" Precision="12" Scale="2" />
+          <Property Name="QREBREACHFEEAPP" Type="DateTime" Precision="3" />
+          <Property Name="QREBREACHREINST" Type="DateTime" Precision="3" />
+          <Property Name="QCORRECTIVEASSI" Type="String" MaxLength="40" FixedLength="false" Unicode="false" />
+          <Property Name="QCORRECTIVEASSI2" Type="DateTime" Precision="3" />
+          <Property Name="QCORRECTIVEASSI23" Type="DateTime" Precision="3" />
+          <Property Name="QCORRECTIVEASSI234" Type="DateTime" Precision="3" />
+          <Property Name="QFTLNOTICENEEDE" Type="String" MaxLength="40" FixedLength="false" Unicode="false" />
+          <Property Name="QTYPEOFASSIGNME" Type="String" MaxLength="40" FixedLength="false" Unicode="false" />
+          <Property Name="QADPUBLICATIONC" Type="DateTime" Precision="3" />
+          <Property Name="QADRECEIPTCONFI" Type="DateTime" Precision="3" />
+          <Property Name="QADREVIEWED" Type="DateTime" Precision="3" />
+          <Property Name="QADSUBMITTED" Type="DateTime" Precision="3" />
+          <Property Name="QBIDREVIEWEDUPL" Type="DateTime" Precision="3" />
+          <Property Name="QHAMPCERTIFICAT" Type="DateTime" Precision="3" />
+          <Property Name="QSALEPOSTPONEDR" Type="String" MaxLength="40" FixedLength="false" Unicode="false" />
+          <Property Name="QSALERESCINDREA" Type="String" MaxLength="40" FixedLength="false" Unicode="false" />
+          <Property Name="QSALESTOPPEDREA" Type="String" MaxLength="40" FixedLength="false" Unicode="false" />
+          <Property Name="QSOLDTO" Type="String" MaxLength="40" FixedLength="false" Unicode="false" />
+          <Property Name="QBIDINSTRUCTION" Type="DateTime" Precision="3" />
+          <Property Name="QDOCUMENTSNEEDE" Type="String" MaxLength="40" FixedLength="false" Unicode="false" />
+          <Property Name="QREESEREVIEWCOM" Type="DateTime" Precision="3" />
+          <Property Name="QTITLEEXAMTOCLI" Type="DateTime" Precision="3" />
+          <Property Name="QAOMCHAINAPPROV" Type="DateTime" Precision="3" />
+          <Property Name="QNOPFCLETTERSUP" Type="DateTime" Precision="3" />
+          <Property Name="QPRESALECERTIFI" Type="DateTime" Precision="3" />
+          <Property Name="QSCRACERTIFICAT" Type="DateTime" Precision="3" />
+          <Property Name="QPUBAFFIDAVITRC" Type="DateTime" Precision="3" />
+          <Property Name="QSCHEDULEDPUBLI" Type="DateTime" Precision="3" />
+          <Property Name="QPUBAFFIDAVITUPLOAD" Type="DateTime" Precision="3" />
+        </EntityType>
+        <EntityContainer Name="ProLawEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Matters" EntityType="Self.Matters" />
+          <EntitySet Name="MattersQFORECLOSUR5" EntityType="Self.MattersQFORECLOSUR5" />
+          <EntitySet Name="MattersQFORECLOSUR6" EntityType="Self.MattersQFORECLOSUR6" />
+          <EntitySet Name="MattersQFORECLOSUREPRO" EntityType="Self.MattersQFORECLOSUREPRO" />
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="ProLawModelStoreContainer" CdmEntityContainer="ProLawEntities">
+          <EntitySetMapping Name="Matters">
+            <EntityTypeMapping TypeName="ProLawModel.Matters">
+              <MappingFragment StoreEntitySet="Matters">
+                <ScalarProperty Name="Matters1" ColumnName="Matters" />
+                <ScalarProperty Name="MatterID" ColumnName="MatterID" />
+                <ScalarProperty Name="ShortDesc" ColumnName="ShortDesc" />
+                <ScalarProperty Name="AreaOfLaw" ColumnName="AreaOfLaw" />
+                <ScalarProperty Name="MatterType" ColumnName="MatterType" />
+                <ScalarProperty Name="OpenedDate" ColumnName="OpenedDate" />
+                <ScalarProperty Name="ClientSort" ColumnName="ClientSort" />
+                <ScalarProperty Name="MatterIDSort" ColumnName="MatterIDSort" />
+                <ScalarProperty Name="ClientPronoun" ColumnName="ClientPronoun" />
+                <ScalarProperty Name="OpposingPronoun" ColumnName="OpposingPronoun" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="StatusDate" ColumnName="StatusDate" />
+                <ScalarProperty Name="Entered" ColumnName="Entered" />
+                <ScalarProperty Name="Rates" ColumnName="Rates" />
+                <ScalarProperty Name="Tasks" ColumnName="Tasks" />
+                <ScalarProperty Name="StmnFormats" ColumnName="StmnFormats" />
+                <ScalarProperty Name="PreBillStmnFormats" ColumnName="PreBillStmnFormats" />
+                <ScalarProperty Name="BillFreq" ColumnName="BillFreq" />
+                <ScalarProperty Name="AddingProfessionals" ColumnName="AddingProfessionals" />
+                <ScalarProperty Name="AddingDateTime" ColumnName="AddingDateTime" />
+                <ScalarProperty Name="FirmPercentage" ColumnName="FirmPercentage" />
+                <ScalarProperty Name="BudgetFees" ColumnName="BudgetFees" />
+                <ScalarProperty Name="BudgetHours" ColumnName="BudgetHours" />
+                <ScalarProperty Name="BudgetHardCosts" ColumnName="BudgetHardCosts" />
+                <ScalarProperty Name="BudgetSoftCosts" ColumnName="BudgetSoftCosts" />
+                <ScalarProperty Name="WDFees" ColumnName="WDFees" />
+                <ScalarProperty Name="WDHardCosts" ColumnName="WDHardCosts" />
+                <ScalarProperty Name="WDSoftCosts" ColumnName="WDSoftCosts" />
+                <ScalarProperty Name="PeriodicRetainer" ColumnName="PeriodicRetainer" />
+                <ScalarProperty Name="StmnRTF" ColumnName="StmnRTF" />
+                <ScalarProperty Name="EventTypeRules" ColumnName="EventTypeRules" />
+                <ScalarProperty Name="EventTypeRules2" ColumnName="EventTypeRules2" />
+                <ScalarProperty Name="SecurityGroupView" ColumnName="SecurityGroupView" />
+                <ScalarProperty Name="SecurityGroupChange" ColumnName="SecurityGroupChange" />
+                <ScalarProperty Name="SecurityGroupDelete" ColumnName="SecurityGroupDelete" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Notes" ColumnName="Notes" />
+                <ScalarProperty Name="IsReverseView" ColumnName="IsReverseView" />
+                <ScalarProperty Name="BillingGroup" ColumnName="BillingGroup" />
+                <ScalarProperty Name="ClientID" ColumnName="ClientID" />
+                <ScalarProperty Name="ClientIDSort" ColumnName="ClientIDSort" />
+                <ScalarProperty Name="SecurityGroupPortalView" ColumnName="SecurityGroupPortalView" />
+                <ScalarProperty Name="SettlementStmnFormats" ColumnName="SettlementStmnFormats" />
+                <ScalarProperty Name="SettleTrustAccounts" ColumnName="SettleTrustAccounts" />
+                <ScalarProperty Name="SettleCashAccounts" ColumnName="SettleCashAccounts" />
+                <ScalarProperty Name="WFStatus" ColumnName="WFStatus" />
+                <ScalarProperty Name="IsApplySecurity" ColumnName="IsApplySecurity" />
+                <ScalarProperty Name="BillFreqCosts" ColumnName="BillFreqCosts" />
+                <ScalarProperty Name="MatterNum" ColumnName="MatterNum" />
+                <ScalarProperty Name="SubMatterNum" ColumnName="SubMatterNum" />
+                <ScalarProperty Name="ClosingWFStatus" ColumnName="ClosingWFStatus" />
+                <ScalarProperty Name="ILSKey" ColumnName="ILSKey" />
+                <ScalarProperty Name="QSUBAREAOFLAW" ColumnName="QSUBAREAOFLAW" />
+                <ScalarProperty Name="QFORECLOSURESAL" ColumnName="QFORECLOSURESAL" />
+                <ScalarProperty Name="QDATEREFERRED" ColumnName="QDATEREFERRED" />
+                <ScalarProperty Name="QWELLSBKASSOCIA" ColumnName="QWELLSBKASSOCIA" />
+                <ScalarProperty Name="QLITIGATIONATTO" ColumnName="QLITIGATIONATTO" />
+                <ScalarProperty Name="QLASTFOURDIGITS" ColumnName="QLASTFOURDIGITS" />
+                <ScalarProperty Name="QNONBILLABLESTA" ColumnName="QNONBILLABLESTA" />
+                <ScalarProperty Name="LpsNTRID" ColumnName="LpsNTRID" />
+                <ScalarProperty Name="LpsDocumentDate" ColumnName="LpsDocumentDate" />
+                <ScalarProperty Name="QLPSPROCESSNAME" ColumnName="QLPSPROCESSNAME" />
+                <ScalarProperty Name="LpsDocumentAttemptDate" ColumnName="LpsDocumentAttemptDate" />
+                <ScalarProperty Name="LpsDocumentAttemptCount" ColumnName="LpsDocumentAttemptCount" />
+                <ScalarProperty Name="QWELLSSOURCE" ColumnName="QWELLSSOURCE" />
+                <ScalarProperty Name="QLPSSERVICERNAM" ColumnName="QLPSSERVICERNAM" />
+                <ScalarProperty Name="LpsDocsRecovered" ColumnName="LpsDocsRecovered" />
+                <ScalarProperty Name="LpsDocsRecoveryAttempted" ColumnName="LpsDocsRecoveryAttempted" />
+                <ScalarProperty Name="NetDirectorCaseId" ColumnName="NetDirectorCaseId" />
+                <ScalarProperty Name="QFROMTHISMATTER" ColumnName="QFROMTHISMATTER" />
+                <ScalarProperty Name="QFORECLOSURESTA" ColumnName="QFORECLOSURESTA" />
+                <ScalarProperty Name="QTITLECURATIVES" ColumnName="QTITLECURATIVES" />
+                <ScalarProperty Name="QREOSTATUS" ColumnName="QREOSTATUS" />
+                <ScalarProperty Name="QDISPOSITIONOFR2" ColumnName="QDISPOSITIONOFR2" />
+                <ScalarProperty Name="QPNMACREFERRALR" ColumnName="QPNMACREFERRALR" />
+                <ScalarProperty Name="QBARDATEVERIFIE" ColumnName="QBARDATEVERIFIE" />
+                <ScalarProperty Name="QACQUISITIONDAT" ColumnName="QACQUISITIONDAT" />
+                <ScalarProperty Name="QMATTERKEYWORD" ColumnName="QMATTERKEYWORD" />
+                <ScalarProperty Name="QSPECIALPROJECT" ColumnName="QSPECIALPROJECT" />
+                <ScalarProperty Name="QBUDGETCONTROL" ColumnName="QBUDGETCONTROL" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="MattersQFORECLOSUR5">
+            <EntityTypeMapping TypeName="ProLawModel.MattersQFORECLOSUR5">
+              <MappingFragment StoreEntitySet="MattersQFORECLOSUR5">
+                <ScalarProperty Name="MattersQFORECLOSUR51" ColumnName="MattersQFORECLOSUR5" />
+                <ScalarProperty Name="MattersQFORECLOSUREPRO" ColumnName="MattersQFORECLOSUREPRO" />
+                <ScalarProperty Name="AddingDateTime" ColumnName="AddingDateTime" />
+                <ScalarProperty Name="CascadeOrder" ColumnName="CascadeOrder" />
+                <ScalarProperty Name="QTIRFEDTAXLIEN" ColumnName="QTIRFEDTAXLIEN" />
+                <ScalarProperty Name="QTIRFEDTAXLIENPROF" ColumnName="QTIRFEDTAXLIENPROF" />
+                <ScalarProperty Name="QTIRDELQTAXES" ColumnName="QTIRDELQTAXES" />
+                <ScalarProperty Name="QTIRDELQTAXESPROF" ColumnName="QTIRDELQTAXESPROF" />
+                <ScalarProperty Name="QTIRTITLEDEF" ColumnName="QTIRTITLEDEF" />
+                <ScalarProperty Name="QTIRTITLEDEFPROF" ColumnName="QTIRTITLEDEFPROF" />
+                <ScalarProperty Name="QTIRTCREQUESTED" ColumnName="QTIRTCREQUESTED" />
+                <ScalarProperty Name="QTIRTCREQUESTEDPROF" ColumnName="QTIRTCREQUESTEDPROF" />
+                <ScalarProperty Name="QTIRTCPROCASS" ColumnName="QTIRTCPROCASS" />
+                <ScalarProperty Name="QTIRTCPROCASSPROF" ColumnName="QTIRTCPROCASSPROF" />
+                <ScalarProperty Name="QTIRPASS" ColumnName="QTIRPASS" />
+                <ScalarProperty Name="QTIRDUPLICATE" ColumnName="QTIRDUPLICATE" />
+                <ScalarProperty Name="QTIRFCCLOSED" ColumnName="QTIRFCCLOSED" />
+                <ScalarProperty Name="QTIRTCPROCPASS" ColumnName="QTIRTCPROCPASS" />
+                <ScalarProperty Name="QTIRTCPROCDUP" ColumnName="QTIRTCPROCDUP" />
+                <ScalarProperty Name="QTCPROCFCCLOSE" ColumnName="QTCPROCFCCLOSE" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="MattersQFORECLOSUR6">
+            <EntityTypeMapping TypeName="ProLawModel.MattersQFORECLOSUR6">
+              <MappingFragment StoreEntitySet="MattersQFORECLOSUR6">
+                <ScalarProperty Name="MattersQFORECLOSUR61" ColumnName="MattersQFORECLOSUR6" />
+                <ScalarProperty Name="MattersQFORECLOSUREPRO" ColumnName="MattersQFORECLOSUREPRO" />
+                <ScalarProperty Name="AddingDateTime" ColumnName="AddingDateTime" />
+                <ScalarProperty Name="CascadeOrder" ColumnName="CascadeOrder" />
+                <ScalarProperty Name="QTOTITLEREQDATE" ColumnName="QTOTITLEREQDATE" />
+                <ScalarProperty Name="QTOTITLERECVDDATE" ColumnName="QTOTITLERECVDDATE" />
+                <ScalarProperty Name="QTOTITLETYPE" ColumnName="QTOTITLETYPE" />
+                <ScalarProperty Name="QTOTITLEPROVIDER" ColumnName="QTOTITLEPROVIDER" />
+                <ScalarProperty Name="QTOTITLEEFFECTDATE" ColumnName="QTOTITLEEFFECTDATE" />
+                <ScalarProperty Name="QTOTITLERPTTOCLIENT" ColumnName="QTOTITLERPTTOCLIENT" />
+                <ScalarProperty Name="QTOTITLEEXAMDATE" ColumnName="QTOTITLEEXAMDATE" />
+                <ScalarProperty Name="QTOTITLEAPPROVED" ColumnName="QTOTITLEAPPROVED" />
+                <ScalarProperty Name="TITL_Order_OrderID" ColumnName="TITL_Order_OrderID" />
+                <ScalarProperty Name="TITL_Order_ExamOnlyTriggered" ColumnName="TITL_Order_ExamOnlyTriggered" />
+                <ScalarProperty Name="QTOTITLERUSH" ColumnName="QTOTITLERUSH" />
+                <ScalarProperty Name="QTONOTES" ColumnName="QTONOTES" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="MattersQFORECLOSUREPRO">
+            <EntityTypeMapping TypeName="ProLawModel.MattersQFORECLOSUREPRO">
+              <MappingFragment StoreEntitySet="MattersQFORECLOSUREPRO">
+                <ScalarProperty Name="MattersQFORECLOSUREPRO1" ColumnName="MattersQFORECLOSUREPRO" />
+                <ScalarProperty Name="Matters" ColumnName="Matters" />
+                <ScalarProperty Name="QASSIGNMENTORDE" ColumnName="QASSIGNMENTORDE" />
+                <ScalarProperty Name="QASSIGNMENTRECE" ColumnName="QASSIGNMENTRECE" />
+                <ScalarProperty Name="QASSIGNMENTSENT" ColumnName="QASSIGNMENTSENT" />
+                <ScalarProperty Name="QFDCPALETTERSEN" ColumnName="QFDCPALETTERSEN" />
+                <ScalarProperty Name="QFTLNOTICE" ColumnName="QFTLNOTICE" />
+                <ScalarProperty Name="QHUDOCCLETTER" ColumnName="QHUDOCCLETTER" />
+                <ScalarProperty Name="QNOICEOFPENDING" ColumnName="QNOICEOFPENDING" />
+                <ScalarProperty Name="QPUBLICATIONDAT" ColumnName="QPUBLICATIONDAT" />
+                <ScalarProperty Name="QSALEMONTH" ColumnName="QSALEMONTH" />
+                <ScalarProperty Name="QSUBLIENNOTICE" ColumnName="QSUBLIENNOTICE" />
+                <ScalarProperty Name="QTEAMTITLEREVIE" ColumnName="QTEAMTITLEREVIE" />
+                <ScalarProperty Name="QTITLEEXAMORDER" ColumnName="QTITLEEXAMORDER" />
+                <ScalarProperty Name="QTITLEEXAMRECEI" ColumnName="QTITLEEXAMRECEI" />
+                <ScalarProperty Name="QSALEYEAR" ColumnName="QSALEYEAR" />
+                <ScalarProperty Name="QTITLEAPPROVEDF" ColumnName="QTITLEAPPROVEDF" />
+                <ScalarProperty Name="QVAAPPRAISALCOM" ColumnName="QVAAPPRAISALCOM" />
+                <ScalarProperty Name="QVAAPPRAISALORD" ColumnName="QVAAPPRAISALORD" />
+                <ScalarProperty Name="QHUDFIRSTACTION" ColumnName="QHUDFIRSTACTION" />
+                <ScalarProperty Name="QWELLSPRESALECH" ColumnName="QWELLSPRESALECH" />
+                <ScalarProperty Name="QFDCPADATAVALID" ColumnName="QFDCPADATAVALID" />
+                <ScalarProperty Name="QNOSDATAVALIDAT" ColumnName="QNOSDATAVALIDAT" />
+                <ScalarProperty Name="QFNMALETTERSENT" ColumnName="QFNMALETTERSENT" />
+                <ScalarProperty Name="QBREACHLETTERSE" ColumnName="QBREACHLETTERSE" />
+                <ScalarProperty Name="QBREACHLETTEREX" ColumnName="QBREACHLETTEREX" />
+                <ScalarProperty Name="QWELLS10DAYCHEC" ColumnName="QWELLS10DAYCHEC" />
+                <ScalarProperty Name="QCHASELETTERSEN" ColumnName="QCHASELETTERSEN" />
+                <ScalarProperty Name="QNOTEREVIEWED" ColumnName="QNOTEREVIEWED" />
+                <ScalarProperty Name="QREBREACHNEEDED" ColumnName="QREBREACHNEEDED" />
+                <ScalarProperty Name="QVALIDBREACHLET" ColumnName="QVALIDBREACHLET" />
+                <ScalarProperty Name="QREBREACHAMOUNT" ColumnName="QREBREACHAMOUNT" />
+                <ScalarProperty Name="QREBREACHFEEAPP" ColumnName="QREBREACHFEEAPP" />
+                <ScalarProperty Name="QREBREACHREINST" ColumnName="QREBREACHREINST" />
+                <ScalarProperty Name="QCORRECTIVEASSI" ColumnName="QCORRECTIVEASSI" />
+                <ScalarProperty Name="QCORRECTIVEASSI2" ColumnName="QCORRECTIVEASSI2" />
+                <ScalarProperty Name="QCORRECTIVEASSI23" ColumnName="QCORRECTIVEASSI23" />
+                <ScalarProperty Name="QCORRECTIVEASSI234" ColumnName="QCORRECTIVEASSI234" />
+                <ScalarProperty Name="QFTLNOTICENEEDE" ColumnName="QFTLNOTICENEEDE" />
+                <ScalarProperty Name="QTYPEOFASSIGNME" ColumnName="QTYPEOFASSIGNME" />
+                <ScalarProperty Name="QADPUBLICATIONC" ColumnName="QADPUBLICATIONC" />
+                <ScalarProperty Name="QADRECEIPTCONFI" ColumnName="QADRECEIPTCONFI" />
+                <ScalarProperty Name="QADREVIEWED" ColumnName="QADREVIEWED" />
+                <ScalarProperty Name="QADSUBMITTED" ColumnName="QADSUBMITTED" />
+                <ScalarProperty Name="QBIDREVIEWEDUPL" ColumnName="QBIDREVIEWEDUPL" />
+                <ScalarProperty Name="QHAMPCERTIFICAT" ColumnName="QHAMPCERTIFICAT" />
+                <ScalarProperty Name="QSALEPOSTPONEDR" ColumnName="QSALEPOSTPONEDR" />
+                <ScalarProperty Name="QSALERESCINDREA" ColumnName="QSALERESCINDREA" />
+                <ScalarProperty Name="QSALESTOPPEDREA" ColumnName="QSALESTOPPEDREA" />
+                <ScalarProperty Name="QSOLDTO" ColumnName="QSOLDTO" />
+                <ScalarProperty Name="QBIDINSTRUCTION" ColumnName="QBIDINSTRUCTION" />
+                <ScalarProperty Name="QDOCUMENTSNEEDE" ColumnName="QDOCUMENTSNEEDE" />
+                <ScalarProperty Name="QREESEREVIEWCOM" ColumnName="QREESEREVIEWCOM" />
+                <ScalarProperty Name="QTITLEEXAMTOCLI" ColumnName="QTITLEEXAMTOCLI" />
+                <ScalarProperty Name="QAOMCHAINAPPROV" ColumnName="QAOMCHAINAPPROV" />
+                <ScalarProperty Name="QNOPFCLETTERSUP" ColumnName="QNOPFCLETTERSUP" />
+                <ScalarProperty Name="QPRESALECERTIFI" ColumnName="QPRESALECERTIFI" />
+                <ScalarProperty Name="QSCRACERTIFICAT" ColumnName="QSCRACERTIFICAT" />
+                <ScalarProperty Name="QPUBAFFIDAVITRC" ColumnName="QPUBAFFIDAVITRC" />
+                <ScalarProperty Name="QSCHEDULEDPUBLI" ColumnName="QSCHEDULEDPUBLI" />
+                <ScalarProperty Name="QPUBAFFIDAVITUPLOAD" ColumnName="QPUBAFFIDAVITUPLOAD" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

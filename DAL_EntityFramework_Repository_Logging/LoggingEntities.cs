@@ -1,6 +1,7 @@
 namespace DAL_EntityFramework_Repository_Logging
 {
     using System;
+    using System.ComponentModel.DataAnnotations;
     using System.Data.Common;
     using System.Data.Entity;
 
@@ -27,7 +28,9 @@ namespace DAL_EntityFramework_Repository_Logging
 
     public class RepositoryChangeLog
     {
+        [Key]
         public long RepositoryChangeLogId { get; set; }
+        public string FQAType { get; set; }
         public string TableUpdated { get; set; }
         public string PrimaryKey { get; set; }
         public string ColumnUpdated { get; set; }

@@ -6,8 +6,9 @@ using System.Threading.Tasks;
 
 namespace EntityFramework_Repository.Models
 {
-    internal enum OperationType
+    public enum OperationType
     {
+        NotSet,
         Failed,
         Update,
         Insert

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace EntityFramework_Repository.Models
 {
-    public class ChangeLog_Entry
+    internal class ChangeLog_Entry
     {
         private static long ID_Counter;
         internal static long GetID_Counter()
@@ -23,10 +23,26 @@ namespace EntityFramework_Repository.Models
             if (ID_Counter == 0)
                 ID_Counter++;
 
-            Entry_ID = ID_Counter++;
+            _Entry_ID = ID_Counter++;
         }
 
-        public long Entry_ID { get; }
+        private long _Entry_ID;
+        public long Entry_ID { get { return _Entry_ID; } }
+        public string FQAType { get; set; }
+        public string TableUpdated { get; set; }
+        public string PrimaryKey { get; set; }
+        public string ColumnUpdated { get; set; }
+        public string NewValue { get; set; }
+        public string OldValue { get; set; }
+        public string Operation { get; set; }
+        public DateTime? CommittedAt { get; set; }
+        public DateTime? ErrorAt { get; set; }
+        public string ErrorNotes { get; set; }
+    }
+    public class Change_Entry
+    {
+        public long Entry_ID { get; set; }
+        internal string FQAType { get; set; }
         public string TableUpdated { get; set; }
         public string PrimaryKey { get; set; }
         public string ColumnUpdated { get; set; }

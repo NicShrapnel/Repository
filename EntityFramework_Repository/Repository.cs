@@ -21,7 +21,27 @@ namespace EntityFramework_Repository
 {
     public class Repository : IDisposable
     {
-        public List<ChangeLog_Entry> ChangeLogQueue { get { return new List<ChangeLog_Entry>(_ChangeLogQueue); } }
+        public IEnumerable<Change_Entry> ChangeLogQueue
+        {
+            get
+            {
+                var op = OperationType.NotSet;
+                return _ChangeLogQueue.Select(c => new Change_Entry
+                {
+                    Entry_ID = c.Entry_ID,
+                    TableUpdated = c.TableUpdated,
+                    PrimaryKey = c.PrimaryKey,
+                    ColumnUpdated = c.ColumnUpdated,
+                    OldValue = c.OldValue,
+                    NewValue = c.NewValue,
+                    CommittedAt = c.CommittedAt,
+                    ErrorAt = c.ErrorAt,
+                    ErrorNotes = c.ErrorNotes,
+                    Operation = c.Operation
+                }).ToList();
+            }
+        }
+
         private List<ChangeLog_Entry> _ChangeLogQueue;
         private List<ContextChange_DTO> ContextChangesQueue;
         private DbConnection ConnectionToUse;
@@ -30,7 +50,6 @@ namespace EntityFramework_Repository
 
         public DbContext ctx { get; set; }
         public bool KillConnectionOnDispose;
-        public bool CommitOnDispose { get; set; }
 
         IChangeLogger logger;
 
@@ -41,8 +60,6 @@ namespace EntityFramework_Repository
 
             KillConnectionOnDispose = true;
 
-            CommitOnDispose = false;
-
             ctx = null;
         }
         public Repository(DbContext context, ConnectionFactory.ConnectionMethod conn, string connectionString = null,
@@ -52,8 +69,6 @@ namespace EntityFramework_Repository
             ContextChangesQueue = new List<ContextChange_DTO>();
 
             KillConnectionOnDispose = killConnectionOnCtxDispose;
-
-            CommitOnDispose = false;
 
             ctx = context;
             ConnectionString = ctx.Database.Connection.ConnectionString;
@@ -105,13 +120,13 @@ namespace EntityFramework_Repository
                         l.PrimaryKey = GetKeyValues(GetKeyNames(i.Entity.GetType()), i.Entity).FirstOrDefault().Value.ToString();
                         logger.Log(l);
                     }
-                    
+
                     i.IsCommitted = true;
                 }
                 foreach (var u in ContextChangesQueue.Where(c => c.Operation == OperationType.Update && !c.IsCommitted))
                 {
                     var logList = _ChangeLogQueue.Where(q => q.Entry_ID >= u.InitialChangeLogID && q.Entry_ID <= u.EndingChangeLogID);
-                    
+
                     foreach (var l in logList)
                     {
                         l.PrimaryKey = GetKeyValues(GetKeyNames(u.Entity.GetType()), u.Entity).FirstOrDefault().Value.ToString();
@@ -123,7 +138,7 @@ namespace EntityFramework_Repository
                 }
                 ctx.SaveChanges();
             }
-            catch
+            catch (Exception blargh)
             {
                 return false;
             }
@@ -134,6 +149,7 @@ namespace EntityFramework_Repository
             CheckDisposedAndKillOnDispose();
 
             var type = entry.GetType();
+
             var dbset = ctx.Set(type);
             dbset.Add(entry);
             ctx.SaveChanges();
@@ -144,8 +160,10 @@ namespace EntityFramework_Repository
 
             var type = entry.GetType();
             var dbset = ctx.Set(type);
+            //dbset.Add(entry);
             dbset.Attach(entry);
             ctx.Entry(entry).State = EntityState.Modified;
+
             ctx.SaveChanges();
         }
 
@@ -157,6 +175,8 @@ namespace EntityFramework_Repository
         {
             if (entry == null || ctx == null)
                 return;
+
+            //var entry = Clone<T>(original);
 
             CheckDisposedAndKillOnDispose();
 
@@ -181,29 +201,51 @@ namespace EntityFramework_Repository
                 IsCommitted = false
             };
 
+            var type = entry.GetType();
+            var tableName = Repository_Helper.GetTableName(type, ctx);
+            var props = type.GetProperties();
+            var first = props.First();
+            var last = props.Last();
+
             if (operation == OperationType.Insert)
             {
-                foreach (var prop in entry.GetType().GetProperties())
+                foreach (var prop in props)
                 {
-                    var changeLogEntry = new ChangeLog_Entry
+                    var val = prop.GetValue(entry);
+
+                    if (val == null)
                     {
-                        TableUpdated = entry.GetType().AssemblyQualifiedName,
-                        PrimaryKey = null,
-                        ColumnUpdated = prop.Name,
-                        NewValue = prop.GetValue(entry) == null ? null : prop.GetValue(entry).ToString(),
-                        OldValue = null,
-                        Operation = "Insert",
-                        CommittedAt = null,
-                        ErrorAt = null,
-                        ErrorNotes = null
-                    };
+                        if (entity.EndingChangeLogID == 0 && prop == last)
+                        {
+                            var changeLogEntry = new ChangeLog_Entry();
+                            entity.EndingChangeLogID = changeLogEntry.Entry_ID;
+                        }
+                        continue;
+                    }
+                    else
+                    {
 
-                    if (prop == entry.GetType().GetProperties().First())
-                        entity.InitialChangeLogID = changeLogEntry.Entry_ID;
-                    else if (prop == entry.GetType().GetProperties().Last())
-                        entity.EndingChangeLogID = changeLogEntry.Entry_ID;
+                        var changeLogEntry = new ChangeLog_Entry
+                        {
+                            FQAType = entry.GetType().AssemblyQualifiedName,
+                            TableUpdated = tableName,
+                            PrimaryKey = null,
+                            ColumnUpdated = Repository_Helper.GetColumnName(type, ctx, prop.Name),
+                            NewValue = val.ToString(),
+                            OldValue = null,
+                            Operation = "Insert",
+                            CommittedAt = null,
+                            ErrorAt = null,
+                            ErrorNotes = null
+                        };
 
-                    QueueChangeLogEntry(changeLogEntry);
+                        if (entity.InitialChangeLogID == 0 && prop == first)
+                            entity.InitialChangeLogID = changeLogEntry.Entry_ID;
+                        else if (entity.EndingChangeLogID == 0 && prop == last)
+                            entity.EndingChangeLogID = changeLogEntry.Entry_ID;
+
+                        QueueChangeLogEntry(changeLogEntry);
+                    }
                 }
             }
             else if (operation == OperationType.Update)
@@ -212,12 +254,11 @@ namespace EntityFramework_Repository
 
                 if (comparison == null)
                 {
-                    var type = entry.GetType();
                     var dbset = ctx.Set(type);
                     comparison = dbset.Find(GetKeyValues(GetKeyNames(type), entry).Select(kv => kv.Value).ToArray());
                 }
 
-                foreach (var prop in entry.GetType().GetProperties())
+                foreach (var prop in props)
                 {
                     object compOldValue = null;
                     if (comparison != null)
@@ -227,9 +268,10 @@ namespace EntityFramework_Repository
                     {
                         var changeLogEntry = new ChangeLog_Entry
                         {
-                            TableUpdated = entry.GetType().AssemblyQualifiedName,
+                            FQAType = entry.GetType().AssemblyQualifiedName,
+                            TableUpdated = tableName,
                             PrimaryKey = null,
-                            ColumnUpdated = prop.Name,
+                            ColumnUpdated = Repository_Helper.GetColumnName(type, ctx, prop.Name),
                             NewValue = prop.GetValue(entry) == null ? null : prop.GetValue(entry).ToString(),
                             OldValue = compOldValue == null ? null : compOldValue.ToString(),
                             Operation = "Update",
@@ -238,9 +280,9 @@ namespace EntityFramework_Repository
                             ErrorNotes = null
                         };
 
-                        if (prop == entry.GetType().GetProperties().First())
+                        if (entity.InitialChangeLogID == 0 && prop == first)
                             entity.InitialChangeLogID = changeLogEntry.Entry_ID;
-                        else if (prop == entry.GetType().GetProperties().Last())
+                        else if (entity.EndingChangeLogID == 0 && prop == last)
                             entity.EndingChangeLogID = changeLogEntry.Entry_ID;
 
                         QueueChangeLogEntry(changeLogEntry);
@@ -295,7 +337,7 @@ namespace EntityFramework_Repository
                 return OperationType.Update;
             else
                 return OperationType.Insert;
-        } 
+        }
         private IEnumerable<string> GetKeyNames(Type type)
         {
             if (ctx == null || type == null)
@@ -307,6 +349,20 @@ namespace EntityFramework_Repository
                     .ObjectContext
                     .MetadataWorkspace
                     .GetItem<EntityType>(type.FullName, DataSpace.OSpace)
+                    .KeyProperties
+                    .Select(p => p.Name);
+        }
+        private IEnumerable<string> GetDatabaseKeyNames(Type type)
+        {
+            if (ctx == null || type == null)
+                return null;
+
+            CheckDisposedAndKillOnDispose();
+
+            return ((IObjectContextAdapter)ctx)
+                    .ObjectContext
+                    .MetadataWorkspace
+                    .GetItem<EntityType>(type.FullName, DataSpace.SSpace)
                     .KeyProperties
                     .Select(p => p.Name);
         }
@@ -325,6 +381,89 @@ namespace EntityFramework_Repository
             }
 
             return keyValueList;
+        }
+
+        public bool RemoveFromQueueByID(long ChangeLog_Entry_ID)
+        {
+            var change = _ChangeLogQueue.Where(c => c.Entry_ID == ChangeLog_Entry_ID).FirstOrDefault();
+
+            var e = ContextChangesQueue
+                .Where(q => q.InitialChangeLogID <= ChangeLog_Entry_ID && q.EndingChangeLogID >= ChangeLog_Entry_ID).FirstOrDefault();
+
+            if (e == null)
+                return false;
+
+            if (e.InitialChangeLogID == e.EndingChangeLogID)
+                ContextChangesQueue.Remove(e);
+            else
+            {
+                var type = e.Entity.GetType();
+                var propType = type.GetProperty(Repository_Helper.GetPropertyName(type, ctx, change.ColumnUpdated)).PropertyType;
+                type.GetProperty(change.ColumnUpdated).SetValue(e.Entity, Convert.ChangeType(change.OldValue, propType));
+            }
+
+            return _ChangeLogQueue.Remove(change);
+        }
+        public bool RemoveRangeFromQueue(long Beginning_ID, long Ending_ID)
+        {
+            var listToRemove = _ChangeLogQueue.Where(c => c.Entry_ID >= Beginning_ID && c.Entry_ID <= Ending_ID).ToList();
+            var entitiesToModify = ContextChangesQueue
+                .Where(q => !q.IsCommitted &&
+                     ((q.InitialChangeLogID >= Beginning_ID && q.InitialChangeLogID <= Ending_ID)
+                    || (q.EndingChangeLogID >= Beginning_ID && q.EndingChangeLogID >= Ending_ID)))
+                .ToList();
+
+            var entitiesToRemoveFromQueue = new List<ContextChange_DTO>();
+
+            foreach (var e in entitiesToModify)
+            {
+                var type = e.Entity.GetType();
+                var entityChangeList = listToRemove.Where(r => r.Entry_ID >= e.InitialChangeLogID && r.Entry_ID <= e.EndingChangeLogID).ToList();
+
+                var dbset = ctx.Set(type);
+                var keynames = GetKeyNames(type);
+                var numKeysInChange = entityChangeList
+                    .Join(keynames,
+                    a => Repository_Helper.GetPropertyName(type, ctx, a.ColumnUpdated),
+                    k => k,
+                    (a, k) => a
+                    ).Count();
+
+                if (numKeysInChange == keynames.Count() && (e.InitialChangeLogID >= Beginning_ID || e.EndingChangeLogID <= Ending_ID))
+                {
+                    entitiesToRemoveFromQueue.Add(e);
+                }
+                else
+                {
+                    foreach (var change in entityChangeList)
+                    {
+                        var propType = type.GetProperty(Repository_Helper.GetPropertyName(type, ctx, change.ColumnUpdated)).PropertyType;
+                        type.GetProperty(Repository_Helper.GetPropertyName(type, ctx, change.ColumnUpdated))
+                            .SetValue(e.Entity, Convert.ChangeType(change.OldValue, propType));
+                    }
+                }
+                ContextChangesQueue = ContextChangesQueue.Except(entitiesToRemoveFromQueue).ToList();
+                _ChangeLogQueue = _ChangeLogQueue.Except(entityChangeList).ToList();
+            }
+
+            return true;
+        }
+        public bool RemoveAllFromQueue()
+        {
+            if (_ChangeLogQueue.Count == 0)
+                return false;
+
+            try
+            {
+                _ChangeLogQueue.Clear();
+                ContextChangesQueue.Clear();
+            }
+            catch
+            {
+                return false;
+            }
+
+            return true;
         }
 
         public bool RollBackAllChanges()
@@ -360,10 +499,10 @@ namespace EntityFramework_Repository
                 {
                     foreach (var c in changesList)
                     {
-                        var propType = obj.GetType().GetProperty(c.ColumnUpdated).GetType();
+                        var propType = obj.GetType().GetProperty(Repository_Helper.GetPropertyName(type, ctx, c.ColumnUpdated)).PropertyType;
                         var convertedChangeValue = Convert.ChangeType(c.OldValue, propType);
 
-                        obj.GetType().GetProperty(c.ColumnUpdated).SetValue(obj, convertedChangeValue);
+                        obj.GetType().GetProperty(Repository_Helper.GetPropertyName(type, ctx, c.ColumnUpdated)).SetValue(obj, convertedChangeValue);
 
                         var logEntry = logger.ctx.RepositoryChangeLog.Where(r => r.RepositoryChangeLogId == c.Entry_ID).FirstOrDefault();
 
@@ -415,18 +554,18 @@ namespace EntityFramework_Repository
             {
                 var type = item.Entity.GetType();
                 var dbset = ctx.Set(type);
-
-                var keyvalues = GetKeyValues(GetKeyNames(type), item.Entity);
+                var keynames = GetKeyNames(type);
+                var keyvalues = GetKeyValues(keynames, item.Entity);
                 var obj = dbset.Find(keyvalues.Select(kv => kv.Value).ToArray());
 
                 var changesList = _ChangeLogQueue.Where(c => c.Entry_ID >= item.InitialChangeLogID && c.Entry_ID <= item.EndingChangeLogID).ToList();
 
                 foreach (var c in changesList)
                 {
-                    var propType = obj.GetType().GetProperty(c.ColumnUpdated).GetType();
+                    var propType = obj.GetType().GetProperty(Repository_Helper.GetPropertyName(type, ctx, c.ColumnUpdated)).PropertyType;
                     var convertedChangeValue = Convert.ChangeType(c.OldValue, propType);
 
-                    obj.GetType().GetProperty(c.ColumnUpdated).SetValue(obj, convertedChangeValue);
+                    obj.GetType().GetProperty(Repository_Helper.GetPropertyName(type, ctx, c.ColumnUpdated)).SetValue(obj, convertedChangeValue);
 
                     var logEntry = logger.ctx.RepositoryChangeLog.Where(r => r.RepositoryChangeLogId == c.Entry_ID).FirstOrDefault();
 
@@ -449,7 +588,15 @@ namespace EntityFramework_Repository
 
                 var changesList = _ChangeLogQueue.Where(c => c.Entry_ID >= item.InitialChangeLogID && c.Entry_ID <= item.EndingChangeLogID).ToList();
 
-                if (changesList.Count() == obj.GetType().GetProperties().Count())
+                var keynames = GetKeyNames(type);
+                var numKeysInChange = changesList
+                    .Join(keynames,
+                    a => Repository_Helper.GetPropertyName(type, ctx, a.ColumnUpdated),
+                    k => k,
+                    (a, k) => a
+                    ).Count();
+
+                if (numKeysInChange == keynames.Count() && (item.InitialChangeLogID >= Beginning_ID || item.EndingChangeLogID <= Ending_ID))
                 {
                     foreach (var c in changesList)
                     {
@@ -465,10 +612,10 @@ namespace EntityFramework_Repository
                 {
                     foreach (var c in changesList)
                     {
-                        var propType = obj.GetType().GetProperty(c.ColumnUpdated).GetType();
+                        var propType = obj.GetType().GetProperty(Repository_Helper.GetPropertyName(type, ctx, c.ColumnUpdated)).PropertyType;
                         var convertedChangeValue = Convert.ChangeType(c.OldValue, propType);
 
-                        obj.GetType().GetProperty(c.ColumnUpdated).SetValue(obj, convertedChangeValue);
+                        obj.GetType().GetProperty(Repository_Helper.GetPropertyName(type, ctx, c.ColumnUpdated)).SetValue(obj, convertedChangeValue);
 
                         var logEntry = logger.ctx.RepositoryChangeLog.Where(r => r.RepositoryChangeLogId == c.Entry_ID).FirstOrDefault();
 
@@ -506,10 +653,10 @@ namespace EntityFramework_Repository
 
                 foreach (var c in changesList)
                 {
-                    var propType = obj.GetType().GetProperty(c.ColumnUpdated).GetType();
+                    var propType = obj.GetType().GetProperty(Repository_Helper.GetPropertyName(type, ctx, c.ColumnUpdated)).PropertyType;
                     var convertedChangeValue = Convert.ChangeType(c.OldValue, propType);
 
-                    obj.GetType().GetProperty(c.ColumnUpdated).SetValue(obj, convertedChangeValue);
+                    obj.GetType().GetProperty(Repository_Helper.GetPropertyName(type, ctx, c.ColumnUpdated)).SetValue(obj, convertedChangeValue);
 
                     var logEntry = logger.ctx.RepositoryChangeLog.Where(r => r.RepositoryChangeLogId == c.Entry_ID).FirstOrDefault();
 
@@ -524,7 +671,62 @@ namespace EntityFramework_Repository
             return true;
         }
 
+        public IEnumerable<Change_Entry> GetAllChanges_ThisEntity<T>(T entity) where T : class
+        {
+            CheckDisposedAndKillOnDispose();
 
+            var type = entity.GetType();
+            var dbset = ctx.Set(type);
+
+            var keynames = GetKeyNames(type).ToList();
+            var keys = GetKeyValues(keynames, entity);
+
+            List<Change_Entry> changeList = new List<Change_Entry>();
+            OperationType op = OperationType.NotSet;
+
+            var keyType = keys.FirstOrDefault().GetType();
+
+            foreach (var eKey in keys)
+            {
+                changeList.AddRange((logger.ctx.RepositoryChangeLog.Where(c => c.TableUpdated == type.Name
+                        && c.PrimaryKey == eKey.Value.ToString())
+                        .Select(c => new Change_Entry
+                        {
+                            Entry_ID = c.RepositoryChangeLogId,
+                            TableUpdated = c.TableUpdated,
+                            PrimaryKey = c.PrimaryKey,
+                            ColumnUpdated = Repository_Helper.GetPropertyName(type, ctx, c.ColumnUpdated),
+                            OldValue = c.OldValue,
+                            NewValue = c.NewValue,
+                            CommittedAt = c.CommittedAt,
+                            ErrorAt = c.ErrorAt,
+                            ErrorNotes = c.ErrorNotes,
+                            Operation = c.Operation
+                        }))
+                        .ToList()
+                    );
+
+                changeList.AddRange((_ChangeLogQueue.Where(c => c.TableUpdated == type.Name
+                        && c.PrimaryKey == eKey.Value.ToString())
+                        .Select(c => new Change_Entry
+                        {
+                            Entry_ID = c.Entry_ID,
+                            TableUpdated = c.TableUpdated,
+                            PrimaryKey = c.PrimaryKey,
+                            ColumnUpdated = Repository_Helper.GetPropertyName(type, ctx, c.ColumnUpdated),
+                            OldValue = c.OldValue,
+                            NewValue = c.NewValue,
+                            CommittedAt = c.CommittedAt,
+                            ErrorAt = c.ErrorAt,
+                            ErrorNotes = c.ErrorNotes,
+                            Operation = c.Operation
+                        }))
+                        .ToList()
+                    );
+            }
+
+            return changeList;
+        }
         public bool RollBackChanges_Made_By_Previous_Repo_ByRange(long Beginning_ID, long Ending_ID)
         {
             CheckDisposedAndKillOnDispose();
@@ -543,7 +745,7 @@ namespace EntityFramework_Repository
 
                 var type = Type.GetType(entry.TableUpdated);
                 var dbset = ctx.Set(type);
-                
+
                 var keyname = GetKeyNames(type).FirstOrDefault();
 
                 var qry = String.Format(
@@ -557,20 +759,20 @@ WHERE {1} = {2}", type.Name, keyname, entry.PrimaryKey);
                 if (res.Count > 0)
                     obj = res.FirstOrDefault();
 
-                var actualPropType = obj.GetType().GetProperty(entry.ColumnUpdated).GetType();
+                var actualPropType = obj.GetType().GetProperty(Repository_Helper.GetPropertyName(type, ctx, entry.ColumnUpdated)).GetType();
                 var changeValue = Convert.ChangeType(entry.OldValue, actualPropType);
 
-                obj.GetType().GetProperty(entry.ColumnUpdated).SetValue(obj, changeValue);
+                obj.GetType().GetProperty(Repository_Helper.GetPropertyName(type, ctx, entry.ColumnUpdated)).SetValue(obj, changeValue);
 
                 var changesList = logger.ctx.RepositoryChangeLog.Where(c => c.PrimaryKey == changeGroupKeyValue && c.TableUpdated == entry.TableUpdated
                                                         && (c.RepositoryChangeLogId >= Beginning_ID && c.RepositoryChangeLogId <= Ending_ID)).ToList();
 
                 foreach (var c in changesList)
                 {
-                    var propType = obj.GetType().GetProperty(c.ColumnUpdated).GetType();
+                    var propType = obj.GetType().GetProperty(Repository_Helper.GetPropertyName(type, ctx, c.ColumnUpdated)).PropertyType;
                     var convertedChangeValue = Convert.ChangeType(c.OldValue, propType);
 
-                    obj.GetType().GetProperty(c.ColumnUpdated).SetValue(obj, convertedChangeValue);
+                    obj.GetType().GetProperty(Repository_Helper.GetPropertyName(type, ctx, c.ColumnUpdated)).SetValue(obj, convertedChangeValue);
 
                     var logEntry = logger.ctx.RepositoryChangeLog.Where(r => r.RepositoryChangeLogId == c.RepositoryChangeLogId).FirstOrDefault();
 
@@ -589,12 +791,13 @@ WHERE {1} = {2}", type.Name, keyname, entry.PrimaryKey);
                 if (!String.IsNullOrWhiteSpace(changeGroupKeyValue) && changeGroupKeyValue == entry.PrimaryKey)
                     continue;
 
-                var type = Type.GetType(entry.TableUpdated);
+                var type = Type.GetType(entry.FQAType);
                 var dbset = ctx.Set(type);
 
                 changeGroupKeyValue = entry.PrimaryKey;
 
                 var keyname = GetKeyNames(type).FirstOrDefault();
+                var dbkeyname = GetDatabaseKeyNames(type).FirstOrDefault();
 
                 var qry = String.Format(
     @"SELECT *
@@ -611,8 +814,15 @@ WHERE {1} = {2}", type.Name, keyname, entry.PrimaryKey);
 
                 var changesList = logger.ctx.RepositoryChangeLog.Where(c => c.PrimaryKey == changeGroupKeyValue && c.TableUpdated == entry.TableUpdated
                                                         && (c.RepositoryChangeLogId >= Beginning_ID && c.RepositoryChangeLogId <= Ending_ID)).ToList();
+                var keynames = GetKeyNames(type);
+                var numKeysInChange = changesList
+                    .Join(keynames,
+                    a => Repository_Helper.GetPropertyName(type, ctx, a.ColumnUpdated),
+                    k => k,
+                    (a, k) => a
+                    ).Count();
 
-                if (changesList.Count() == obj.GetType().GetProperties().Count())
+                if (numKeysInChange == keynames.Count() && changesList.Count >= obj.GetType().GetProperties().Count())
                 {
                     foreach (var c in changesList)
                     {
@@ -628,10 +838,10 @@ WHERE {1} = {2}", type.Name, keyname, entry.PrimaryKey);
                 {
                     foreach (var c in changesList)
                     {
-                        var propType = obj.GetType().GetProperty(c.ColumnUpdated).GetType();
+                        var propType = obj.GetType().GetProperty(Repository_Helper.GetPropertyName(type, ctx, c.ColumnUpdated)).PropertyType;
                         var convertedChangeValue = Convert.ChangeType(c.OldValue, propType);
 
-                        obj.GetType().GetProperty(c.ColumnUpdated).SetValue(obj, convertedChangeValue);
+                        obj.GetType().GetProperty(Repository_Helper.GetPropertyName(type, ctx, c.ColumnUpdated)).SetValue(obj, convertedChangeValue);
 
                         var logEntry = logger.ctx.RepositoryChangeLog.Where(r => r.RepositoryChangeLogId == c.RepositoryChangeLogId).FirstOrDefault();
 
@@ -657,7 +867,7 @@ WHERE {1} = {2}", type.Name, keyname, entry.PrimaryKey);
 
             if (entry == null)
                 return false;
-            
+
             var type = Type.GetType(entry.TableUpdated);
             var dbset = ctx.Set(type);
 
@@ -674,16 +884,17 @@ WHERE {1} = {2}", type.Name, keyname, entry.PrimaryKey);
             if (res.Count > 0)
                 obj = res.FirstOrDefault();
 
-            var actualPropType = obj.GetType().GetProperty(entry.ColumnUpdated).GetType();
+            var actualPropName = Repository_Helper.GetPropertyName(type, ctx, entry.ColumnUpdated);
+            var actualPropType = obj.GetType().GetProperty(actualPropName).GetType();
             var convertedChangeValue = Convert.ChangeType(entry.OldValue, actualPropType);
 
-            obj.GetType().GetProperty(entry.ColumnUpdated).SetValue(obj, convertedChangeValue);
+            obj.GetType().GetProperty(actualPropName).SetValue(obj, convertedChangeValue);
 
-            if (keyname == entry.ColumnUpdated)
+            if (keyname == actualPropName)
                 return false;
 
             entry.Operation = "Rolled Back";
-            
+
             UpdateContext(obj);
 
             logger.ctx.SaveChanges();
@@ -697,7 +908,7 @@ WHERE {1} = {2}", type.Name, keyname, entry.PrimaryKey);
             {
                 ctx.Database.Exists();
             }
-            catch(InvalidOperationException)
+            catch (InvalidOperationException)
             {
                 if (!KillConnectionOnDispose)
                 {
@@ -719,14 +930,14 @@ WHERE {1} = {2}", type.Name, keyname, entry.PrimaryKey);
         {
             return await dbset.SqlQuery(qry).ToListAsync();
         }
-        private T Clone<T>(this T value)
+        private T Clone<T>(T value)
         {
             string json = JsonConvert.SerializeObject(value);
 
             return JsonConvert.DeserializeObject<T>(json);
         }
 
-        #region IDisposable Support
+        #region IDispose
         private bool disposedValue = false; // To detect redundant calls
 
         protected virtual void Dispose(bool disposing)
@@ -735,10 +946,6 @@ WHERE {1} = {2}", type.Name, keyname, entry.PrimaryKey);
             {
                 if (disposing)
                 {
-                    if (CommitOnDispose)
-                    {
-                        CommitContextChanges();
-                    }
                     ctx.Dispose();
 
                     ContextChangesQueue.Clear();
@@ -755,19 +962,9 @@ WHERE {1} = {2}", type.Name, keyname, entry.PrimaryKey);
             }
         }
 
-        // TODO: override a finalizer only if Dispose(bool disposing) above has code to free unmanaged resources.
-        // ~Repository() {
-        //   // Do not change this code. Put cleanup code in Dispose(bool disposing) above.
-        //   Dispose(false);
-        // }
-
-        // This code added to correctly implement the disposable pattern.
         public void Dispose()
         {
-            // Do not change this code. Put cleanup code in Dispose(bool disposing) above.
             Dispose(true);
-            // TODO: uncomment the following line if the finalizer is overridden above.
-            // GC.SuppressFinalize(this);
         }
         #endregion
     }

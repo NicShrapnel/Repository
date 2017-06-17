@@ -36,6 +36,7 @@ namespace EntityFramework_Repository.Models
                 OldValue = log.OldValue,
                 Operation = log.Operation,
                 PrimaryKey = log.PrimaryKey,
+                FQAType = log.FQAType,
                 TableUpdated = log.TableUpdated,
                 RepositoryChangeLogId = log.Entry_ID
             });
