@@ -22,8 +22,8 @@ namespace Repository_UnitTests
 
                 r.QueueContextChange(new MattersQFORECLOSUR6
                 {
-                    MattersQFORECLOSUREPRO = "RepoTestRollbackAll",
-                    MattersQFORECLOSUR61 = "RepoTestRollbackAll",
+                    MattersQFORECLOSUREPRO = "RepoTestCreationAndRollbackAll",
+                    MattersQFORECLOSUR61 = "RepoTestCreationAndRollbackAll",
                     AddingDateTime = DateTime.Now,
                     QTOTITLETYPE = "RepoTest"
                 });
@@ -31,7 +31,7 @@ namespace Repository_UnitTests
 
                 r.CommitContextChanges();
 
-                Assert.IsNull(ctx.MattersQFORECLOSUR6.Where(m => m.MattersQFORECLOSUR61 == "RepoTestRollbackAll").FirstOrDefault());
+                Assert.IsNull(ctx.MattersQFORECLOSUR6.Where(m => m.MattersQFORECLOSUR61 == "RepoTestCreationAndRollbackAll").FirstOrDefault());
             }
         }
         [TestMethod]
@@ -44,18 +44,18 @@ namespace Repository_UnitTests
                 r.LoadContext(ctx);
                 r.LoadLogger(EntityFramework_Repository.ConnectionFactory.ConnectionMethod.CurrentContextConnection);
 
-                r.QueueContextChange(new MattersQFORECLOSUR6
+                r.QueueContextChange(new Matters
                 {
-                    MattersQFORECLOSUREPRO = "RepoTestRollbackRange",
-                    MattersQFORECLOSUR61 = "RepoTestRollbackRange",
+                    Matters1 = "RepoTestCreationAndRollbackRange",
+                    MatterID = "RepoTestCreationAndRollbackRange",
                     AddingDateTime = DateTime.Now,
-                    QTOTITLETYPE = "RepoTest"
+                    AddingProfessionals = "RepoTest"
                 });
-                r.RemoveRangeFromQueue(1, 2);
+                r.RemoveRangeFromQueue(2,4);
 
                 r.CommitContextChanges();
 
-                Assert.IsNull(ctx.MattersQFORECLOSUR6.Where(m => m.MattersQFORECLOSUREPRO == "RepoTestRollbackRange").FirstOrDefault());
+                Assert.IsNull(ctx.Matters.Where(m => m.MatterID == "RepoTestCreationAndRollbackRange").FirstOrDefault());
                 r.RollBackAllChanges();
             }
         }
@@ -69,18 +69,18 @@ namespace Repository_UnitTests
                 r.LoadContext(ctx);
                 r.LoadLogger(EntityFramework_Repository.ConnectionFactory.ConnectionMethod.CurrentContextConnection);
 
-                r.QueueContextChange(new MattersQFORECLOSUR6
+                r.QueueContextChange(new Matters
                 {
-                    MattersQFORECLOSUREPRO = "RepoTestRollbackOne",
-                    MattersQFORECLOSUR61 = "RepoTestRollbackOne",
+                    Matters1 = "RepoTestCreationAndRollbackAll",
+                    MatterID = "RepoTestCreationAndRollbackAll",
                     AddingDateTime = DateTime.Now,
-                    QTOTITLETYPE = "RepoTest"
+                    AddingProfessionals = "RepoTest"
                 });
                 r.RemoveFromQueueByID(2);
 
                 r.CommitContextChanges();
 
-                Assert.IsNull(ctx.MattersQFORECLOSUR6.Where(m => m.MattersQFORECLOSUREPRO == "RepoTestRollbackOne").FirstOrDefault());
+                Assert.IsNull(ctx.Matters.Where(m => m.MatterID == "RepoTestCreationAndRollbackAll").FirstOrDefault());
                 r.RollBackAllChanges();
             }
         }
@@ -94,12 +94,12 @@ namespace Repository_UnitTests
                 r.LoadContext(ctx);
                 r.LoadLogger(EntityFramework_Repository.ConnectionFactory.ConnectionMethod.CurrentContextConnection);
 
-                r.QueueContextChange(new MattersQFORECLOSUR6
+                r.QueueContextChange(new Matters
                 {
-                    MattersQFORECLOSUREPRO = "RepoTestCreationAndRollbackAll",
-                    MattersQFORECLOSUR61 = "RepoTestCreationAndRollbackAll",
+                    Matters1 = "RepoTestCreationAndRollbackAll",
+                    MatterID = "RepoTestCreationAndRollbackAll",
                     AddingDateTime = DateTime.Now,
-                    QTOTITLETYPE = "RepoTest"
+                    AddingProfessionals = "RepoTest"
                 });
 
                 foreach (var item in r.ChangeLogQueue)
@@ -107,13 +107,11 @@ namespace Repository_UnitTests
                     Console.WriteLine(item.TableUpdated + "." + item.ColumnUpdated + ": " + item.NewValue);
                 }
 
-                r.CommitContextChanges();
-
                 r.RemoveAllFromQueue();
 
                 r.CommitContextChanges();
 
-                Assert.IsNull(ctx.MattersQFORECLOSUR6.Where(m => m.MattersQFORECLOSUREPRO == "RepoTestCreationAndRollbackAll").FirstOrDefault());
+                Assert.IsNull(ctx.Matters.Where(m => m.Matters1 == "RepoTestCreationAndRollbackAll").FirstOrDefault());
             }
         }
 
@@ -128,20 +126,20 @@ namespace Repository_UnitTests
                 r.LoadContext(ctx);
                 r.LoadLogger(EntityFramework_Repository.ConnectionFactory.ConnectionMethod.CurrentContextConnection, null, false);
 
-                r.QueueContextChange(new MattersQFORECLOSUR6
+                r.QueueContextChange(new Matters
                 {
-                    MattersQFORECLOSUREPRO = "RepoTestCreation,RollbackOne",
-                    MattersQFORECLOSUR61 = "RepoTestCreation,RollbackOne2",
+                    Matters1 = "RepoTestCreationAndRollbackAll",
+                    MatterID = "RepoTestCreationAndRollbackAll2",
                     AddingDateTime = DateTime.Now,
-                    QTOTITLETYPE = "RepoTest"
+                    AddingProfessionals = "RepoTest"
                 });
 
                 Assert.IsTrue(r.CommitContextChanges());
-                Assert.IsNotNull(ctx.MattersQFORECLOSUR6.Where(c => c.MattersQFORECLOSUR61 == "RepoTestCreation,RollbackOne2").FirstOrDefault());
+                Assert.IsNotNull(ctx.Matters.Where(c => c.MatterID == "RepoTestCreationAndRollbackAll2").FirstOrDefault());
 
                 foreach (var item in r.ChangeLogQueue.Where(c => c.CommittedAt.HasValue))
                 {
-                    if (item.NewValue == "RepoTestCreation,RollbackOne")
+                    if (item.NewValue == "RepoTestCreationAndRollbackAll2")
                         selection = item.Entry_ID;
 
                     Console.WriteLine(item.Entry_ID + ") " + item.TableUpdated + "." + item.ColumnUpdated + ": " + item.NewValue);
@@ -155,8 +153,8 @@ namespace Repository_UnitTests
 
             using (var ctx = new ProLawEntities())
             {
-                var m = ctx.MattersQFORECLOSUR6.Where(c => c.MattersQFORECLOSUREPRO == "RepoTestCreation,RollbackOne2").FirstOrDefault();
-                Assert.IsNull(m);
+                var matter = ctx.Matters.Where(c => c.MatterID == "RepoTestCreationAndRollbackAll2").FirstOrDefault();
+                Assert.IsNull(matter);
             }
         }
 
@@ -170,12 +168,12 @@ namespace Repository_UnitTests
                 r.LoadContext(ctx);
                 r.LoadLogger(EntityFramework_Repository.ConnectionFactory.ConnectionMethod.CurrentContextConnection, null, false);
 
-                r.QueueContextChange(new MattersQFORECLOSUR6
+                r.QueueContextChange(new Matters
                 {
-                    MattersQFORECLOSUREPRO = "RepoTestCreation,RollbackRange",
-                    MattersQFORECLOSUR61 = "RepoTestCreation,RollbackRange",
+                    Matters1 = "RepoTestUpdateAndRollbackRange",
+                    MatterID = "RepoTestUpdateAndRollbackRange",
                     AddingDateTime = DateTime.Now,
-                    QTOTITLETYPE = "RepoTest"
+                    AddingProfessionals = "RepoTest"
                 });
 
                 long minValue = 0;
@@ -200,7 +198,7 @@ namespace Repository_UnitTests
                 Console.Write("Enter a range of ChangeLog Entry IDs to roll back: ");
 
                 Assert.IsTrue(r.RollBackChangesByRange(minValue, maxValue));
-                Assert.IsNull(ctx.MattersQFORECLOSUR6.Where(m => m.MattersQFORECLOSUREPRO == "RepoTestUpdateAndRollbackRange").FirstOrDefault());
+                Assert.IsNull(ctx.Matters.Where(m => m.Matters1 == "RepoTestUpdateAndRollbackRange").FirstOrDefault());
             }
         }
         [TestMethod]
@@ -212,20 +210,20 @@ namespace Repository_UnitTests
             {
                 r = new Repository(ctx, EntityFramework_Repository.ConnectionFactory.ConnectionMethod.CurrentContextConnection, null, false);
 
-                r.QueueContextChange(new MattersQFORECLOSUR6
+                r.QueueContextChange(new Matters
                 {
-                    MattersQFORECLOSUREPRO = "RepoTestUpdateAndRollbackAll",
-                    MattersQFORECLOSUR61 = "RepoTestUpdateAndRollbackAll",
+                    Matters1 = "RepoTestUpdateAndRollbackAll",
+                    MatterID = "RepoTestUpdateAndRollbackAll",
                     AddingDateTime = DateTime.Now,
-                    QTOTITLETYPE = "RepoTest"
+                    AddingProfessionals = "RepoTest"
                 });
 
                 Assert.IsTrue(r.CommitContextChanges());
 
-                var toUpdate = ctx.MattersQFORECLOSUR6.Where(m => m.MattersQFORECLOSUR61 == "TestUpdateAndRollbackAll").FirstOrDefault();
+                var toUpdate = ctx.Matters.Where(m => m.Matters1 == "TestUpdateAndRollbackAll").FirstOrDefault();
                 Assert.IsNotNull(toUpdate);
 
-                toUpdate.MattersQFORECLOSUREPRO = null;
+                toUpdate.MatterID = null;
                 r.QueueContextChange(toUpdate);
 
                 foreach (var item in r.ChangeLogQueue.Where(q => q.CommittedAt == null))
@@ -235,7 +233,7 @@ namespace Repository_UnitTests
 
                 Assert.IsTrue(r.CommitContextChanges());
                 Assert.IsTrue(r.RollBackAllChanges());
-                Assert.IsNull(ctx.MattersQFORECLOSUR6.Where(m => m.MattersQFORECLOSUREPRO == "TestUpdateAndRollbackAll").FirstOrDefault());
+                Assert.IsNull(ctx.Matters.Where(m => m.MatterID == "TestUpdateAndRollbackAll" || m.MatterID == null).FirstOrDefault());
             }
         }
 
@@ -247,22 +245,22 @@ namespace Repository_UnitTests
             using (var ctx = new ProLawEntities())
             {
                 r = new Repository(ctx, EntityFramework_Repository.ConnectionFactory.ConnectionMethod.CurrentContextConnection, null, false);
-
-                r.QueueContextChange(new MattersQFORECLOSUR6
+                r.QueueContextChange(new Matters
                 {
-                    MattersQFORECLOSUREPRO = "RepoTestUpdateAndRollbackSingl",
-                    MattersQFORECLOSUR61 = "RepoTestUpdateAndRollbackSingl",
+                    Matters1 = "RepoTestUpdateAndRollbackSingl",
+                    MatterID = "RepoTestUpdateAndRollbackSingl",
                     AddingDateTime = DateTime.Now,
-                    QTOTITLETYPE = "RepoTest"
+                    AddingProfessionals = "RepoTest"
                 });
 
                 Assert.IsTrue(r.CommitContextChanges());
 
-                var toUpdate = ctx.MattersQFORECLOSUR6.Where(m => m.MattersQFORECLOSUREPRO == "RepoTestUpdateAndRollbackSingl").FirstOrDefault();
+                var toUpdate = ctx.Matters.Where(m => m.Matters1 == "RepoTestUpdateAndRollbackSingl").FirstOrDefault();
                 Assert.IsNotNull(toUpdate);
 
-                toUpdate.MattersQFORECLOSUREPRO = null;
+                toUpdate.MatterID = null;
                 toUpdate.AddingDateTime = null;
+                toUpdate.AddingProfessionals = null;
 
                 r.QueueContextChange(toUpdate);
 
@@ -271,13 +269,13 @@ namespace Repository_UnitTests
                     Console.WriteLine(item.Entry_ID + ") " + item.TableUpdated + "." + item.ColumnUpdated + ": " + item.NewValue);
                 }
 
-                var changeList = r.ChangeLogQueue.Where(q => q.PrimaryKey == toUpdate.MattersQFORECLOSUR61.ToString()).ToList();
-                var changeID = changeList.Where(change => change.ColumnUpdated == "MattersQFORECLOSUREPRO").Select(change => change.Entry_ID).FirstOrDefault();
+                var changeList = r.ChangeLogQueue.Where(q => q.PrimaryKey == toUpdate.Matters1.ToString()).ToList();
+                var changeID = changeList.Where(change => change.ColumnUpdated == "MatterID").Select(change => change.Entry_ID).FirstOrDefault();
 
                 Assert.IsTrue(r.CommitContextChanges());
-                Assert.IsNotNull(ctx.MattersQFORECLOSUR6.Where(m => m.MattersQFORECLOSUREPRO == null).FirstOrDefault());
+                Assert.IsNotNull(ctx.Matters.Where(m => m.MatterID == null).FirstOrDefault());
                 Assert.IsTrue(r.RollBackChangeByID(changeID));
-                Assert.IsNull(ctx.MattersQFORECLOSUR6.Where(m => m.MattersQFORECLOSUREPRO == null).FirstOrDefault());
+                Assert.IsNull(ctx.Matters.Where(m => m.MatterID == null).FirstOrDefault());
             }
         }
         [TestMethod]
@@ -329,98 +327,98 @@ namespace Repository_UnitTests
             }
         }
 
-        //[TestMethod]
-        //public void TestRollingBackSingleFromPreviousIteration()
-        //{
-        //    using (var ctx = new ProLawEntities())
-        //    {
-        //        var PreviousIterationRepo = new Repository(ctx, EntityFramework_Repository.ConnectionFactory.ConnectionMethod.CurrentContextConnection);
-        //        PreviousIterationRepo.QueueContextChange(new Matters
-        //        {
-        //            Matters1 = "RepoTestPrevCreation,RollbackSingle",
-        //            MatterID = "RepoTestPrevCreation,RollbackSingle",
-        //            AddingDateTime = DateTime.Now,
-        //            AddingProfessionals = "RepoTest"
-        //        });
+        [TestMethod]
+        public void TestRollingBackSingleFromPreviousIteration()
+        {
+            using (var ctx = new ProLawEntities())
+            {
+                var PreviousIterationRepo = new Repository(ctx, EntityFramework_Repository.ConnectionFactory.ConnectionMethod.CurrentContextConnection);
+                PreviousIterationRepo.QueueContextChange(new Matters
+                {
+                    Matters1 = "RepoTestPrevCreation,RollbackSingle",
+                    MatterID = "RepoTestPrevCreation,RollbackSingle",
+                    AddingDateTime = DateTime.Now,
+                    AddingProfessionals = "RepoTest"
+                });
 
 
-        //        foreach (var item in PreviousIterationRepo.ChangeLogQueue)
-        //        {
-        //            Console.WriteLine(item.TableUpdated + "." + item.ColumnUpdated + ": " + item.NewValue);
-        //        }
+                foreach (var item in PreviousIterationRepo.ChangeLogQueue)
+                {
+                    Console.WriteLine(item.TableUpdated + "." + item.ColumnUpdated + ": " + item.NewValue);
+                }
 
-        //        Assert.IsTrue(PreviousIterationRepo.CommitContextChanges());
-        //        Assert.IsNotNull(ctx.Matters.Where(m => m.Matters1 == "RepoTestPrevCreation,RollbackSingle").FirstOrDefault());
-        //    }
+                Assert.IsTrue(PreviousIterationRepo.CommitContextChanges());
+                Assert.IsNotNull(ctx.Matters.Where(m => m.Matters1 == "RepoTestPrevCreation,RollbackSingle").FirstOrDefault());
+            }
 
-        //    Repository r = null;
-        //    long changeID;
-        //    using (var ctx = new ProLawEntities())
-        //    {
-        //        r = new Repository(ctx, EntityFramework_Repository.ConnectionFactory.ConnectionMethod.CurrentContextConnection, null, false);
+            Repository r = null;
+            long changeID;
+            using (var ctx = new ProLawEntities())
+            {
+                r = new Repository(ctx, EntityFramework_Repository.ConnectionFactory.ConnectionMethod.CurrentContextConnection, null, false);
 
-        //        var matter = ctx.Matters.Where(m => m.Matters1 == "RepoTestPrevCreation,RollbackSingle").OrderByDescending(m => m.Matters1).FirstOrDefault();
+                var matter = ctx.Matters.Where(m => m.Matters1 == "RepoTestPrevCreation,RollbackSingle").OrderByDescending(m => m.Matters1).FirstOrDefault();
 
-        //        Assert.IsNotNull(matter);
+                Assert.IsNotNull(matter);
 
-        //        changeID = ctx.RepositoryChangeLogs.Where(q => q.PrimaryKey == matter.Matters1)
-        //            .Where(c => c.ColumnUpdated == "MatterID")
-        //            .Select(c => c.RepositoryChangeLogID)
-        //            .FirstOrDefault();
+                changeID = ctx.RepositoryChangeLogs.Where(q => q.PrimaryKey == matter.Matters1)
+                    .Where(c => c.ColumnUpdated == "MatterID")
+                    .Select(c => c.RepositoryChangeLogId)
+                    .FirstOrDefault();
 
-        //        Assert.IsTrue(r.CommitContextChanges());
-        //        Assert.IsNotNull(ctx.Matters.Where(m => m.MatterID == "RepoTestPrevCreation,RollbackSingle").FirstOrDefault());
-        //    }
+                Assert.IsTrue(r.CommitContextChanges());
+                Assert.IsNotNull(ctx.Matters.Where(m => m.MatterID == "RepoTestPrevCreation,RollbackSingle").FirstOrDefault());
+            }
 
-        //    Assert.IsTrue(r.RollBackChange_Made_By_Previous_Repo_ByID(changeID));
+            Assert.IsTrue(r.RollBackChange_Made_By_Previous_Repo_ByID(changeID));
 
-        //    using (var ctx = new ProLawEntities())
-        //    {
-        //        Assert.IsNull(ctx.Matters.Where(m => m.MatterID == "RepoTestPrevCreation,RollbackSingle").FirstOrDefault());
-        //    }
-        //}
-        //[TestMethod]
-        //public void TestRollingBackRangeFromPreviousIteration()
-        //{
-        //    using (var ctx = new ProLawEntities())
-        //    {
-        //        var PreviousIterationRepo = new Repository(ctx, EntityFramework_Repository.ConnectionFactory.ConnectionMethod.CurrentContextConnection);
-        //        PreviousIterationRepo.QueueContextChange(new Matters
-        //        {
-        //            Matters1 = "RepoTestPrevCreation,RollbackRange",
-        //            MatterID = "RepoTestPrevCreation,RollbackRange",
-        //            AddingDateTime = DateTime.Now,
-        //            AddingProfessionals = "RepoTest"
-        //        });
+            using (var ctx = new ProLawEntities())
+            {
+                Assert.IsNull(ctx.Matters.Where(m => m.MatterID == "RepoTestPrevCreation,RollbackSingle").FirstOrDefault());
+            }
+        }
+        [TestMethod]
+        public void TestRollingBackRangeFromPreviousIteration()
+        {
+            using (var ctx = new ProLawEntities())
+            {
+                var PreviousIterationRepo = new Repository(ctx, EntityFramework_Repository.ConnectionFactory.ConnectionMethod.CurrentContextConnection);
+                PreviousIterationRepo.QueueContextChange(new Matters
+                {
+                    Matters1 = "RepoTestPrevCreation,RollbackRange",
+                    MatterID = "RepoTestPrevCreation,RollbackRange",
+                    AddingDateTime = DateTime.Now,
+                    AddingProfessionals = "RepoTest"
+                });
 
-        //        foreach (var item in PreviousIterationRepo.ChangeLogQueue)
-        //        {
-        //            Console.WriteLine(item.TableUpdated + "." + item.ColumnUpdated + ": " + item.NewValue);
-        //        }
+                foreach (var item in PreviousIterationRepo.ChangeLogQueue)
+                {
+                    Console.WriteLine(item.TableUpdated + "." + item.ColumnUpdated + ": " + item.NewValue);
+                }
 
-        //        Assert.IsTrue(PreviousIterationRepo.CommitContextChanges());
-        //        Assert.IsNotNull(ctx.Matters.Where(m => m.Matters1 == "RepoTestPrevCreation,RollbackRange").FirstOrDefault());
-        //    }
+                Assert.IsTrue(PreviousIterationRepo.CommitContextChanges());
+                Assert.IsNotNull(ctx.Matters.Where(m => m.Matters1 == "RepoTestPrevCreation,RollbackRange").FirstOrDefault());
+            }
 
-        //    Repository r = null;
-        //    List<long> changeIDList;
-        //    using (var ctx = new ProLawEntities())
-        //    {
-        //        r = new Repository(ctx, EntityFramework_Repository.ConnectionFactory.ConnectionMethod.CurrentContextConnection, null, false);
+            Repository r = null;
+            List<long> changeIDList;
+            using (var ctx = new ProLawEntities())
+            {
+                r = new Repository(ctx, EntityFramework_Repository.ConnectionFactory.ConnectionMethod.CurrentContextConnection, null, false);
 
-        //        var matter = ctx.Matters.Where(m => m.Matters1 == "RepoTestPrevCreation,RollbackRange").FirstOrDefault();
+                var matter = ctx.Matters.Where(m => m.Matters1 == "RepoTestPrevCreation,RollbackRange").FirstOrDefault();
 
-        //        changeIDList = ctx.RepositoryChangeLogs.Where(q => q.PrimaryKey == matter.Matters1).Select(q => q.RepositoryChangeLogId).ToList();
-        //    }
+                changeIDList = ctx.RepositoryChangeLogs.Where(q => q.PrimaryKey == matter.Matters1).Select(q => q.RepositoryChangeLogId).ToList();
+            }
 
-        //    Assert.IsTrue(r.RollBackChanges_Made_By_Previous_Repo_ByRange(changeIDList.First(), changeIDList.Last()));
+            Assert.IsTrue(r.RollBackChanges_Made_By_Previous_Repo_ByRange(changeIDList.First(), changeIDList.Last()));
 
-        //    using (var ctx = new ProLawEntities())
-        //    {
-        //        Assert.IsNull(ctx.Matters.Where(m => m.Matters1 == "RepoTestPrevCreation,RollbackRange").FirstOrDefault());
-        //    }
+            using (var ctx = new ProLawEntities())
+            {
+                Assert.IsNull(ctx.Matters.Where(m => m.Matters1 == "RepoTestPrevCreation,RollbackRange").FirstOrDefault());
+            }
 
-        //}
+        }
         [TestMethod]
         public void TestGetAllChangesForEntity()
         {
@@ -448,7 +446,7 @@ namespace Repository_UnitTests
             }
 
             Repository r = null;
-
+            
             r = new Repository(new ProLawEntities(), EntityFramework_Repository.ConnectionFactory.ConnectionMethod.CurrentContextConnection, null, false);
 
             var allChanges = r.GetAllChanges_ThisEntity(f6).ToList();

@@ -4,6 +4,7 @@ using System.Data.Entity;
 using System.Data.Entity.Core.Mapping;
 using System.Data.Entity.Core.Metadata.Edm;
 using System.Data.Entity.Infrastructure;
+using System.Data.Entity.Migrations;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
@@ -144,12 +145,17 @@ namespace EntityFramework_Repository.Models
             return propName;
         }
     }
-    public static class StringExtensions
+    public static class Extensions
     {
         public static string SafeReplace(this string input, string find, string replace, bool matchWholeWord)
         {
             string textToFind = matchWholeWord ? string.Format(@"\b{0}\b", find) : find;
             return Regex.Replace(input, textToFind, replace);
+        }
+        private static void AddOrUpdate<T>(this DbSet set, params T[] entities) where T : class
+        {
+            IDbSet<T> mySet = set as DbSet<T>;
+            mySet.AddOrUpdate(entities);
         }
     }
     public static class QuickMapper

@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="ProLawModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="ProLawModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="Matters">
           <Key>
             <PropertyRef Name="Matters" />
@@ -201,15 +201,33 @@
           <Property Name="QPUBAFFIDAVITRC" Type="datetime" />
           <Property Name="QSCHEDULEDPUBLI" Type="datetime" />
           <Property Name="QPUBAFFIDAVITUPLOAD" Type="datetime" />
+          <Property Name="QHUDOCCLETTERUPLOAD1" Type="datetime" />
+          <Property Name="QHUDOCCLETTERUPLOAD2" Type="datetime" />
+        </EntityType>
+        <EntityType Name="RepositoryChangeLogs">
+          <Key>
+            <PropertyRef Name="RepositoryChangeLogId" />
+          </Key>
+          <Property Name="RepositoryChangeLogId" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="FQAType" Type="nvarchar(max)" />
+          <Property Name="TableUpdated" Type="nvarchar(max)" />
+          <Property Name="PrimaryKey" Type="nvarchar(max)" />
+          <Property Name="ColumnUpdated" Type="nvarchar(max)" />
+          <Property Name="NewValue" Type="nvarchar(max)" />
+          <Property Name="OldValue" Type="nvarchar(max)" />
+          <Property Name="Operation" Type="nvarchar(max)" />
+          <Property Name="CommittedAt" Type="datetime" />
+          <Property Name="ErrorAt" Type="datetime" />
+          <Property Name="ErrorNotes" Type="nvarchar(max)" />
         </EntityType>
         <EntityContainer Name="ProLawModelStoreContainer">
           <EntitySet Name="Matters" EntityType="Self.Matters" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="MattersQFORECLOSUR5" EntityType="Self.MattersQFORECLOSUR5" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="MattersQFORECLOSUR6" EntityType="Self.MattersQFORECLOSUR6" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="MattersQFORECLOSUREPRO" EntityType="Self.MattersQFORECLOSUREPRO" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="RepositoryChangeLogs" EntityType="Self.RepositoryChangeLogs" Schema="dbo" store:Type="Tables" />
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="ProLawModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -409,13 +427,32 @@
           <Property Name="QPUBAFFIDAVITRC" Type="DateTime" Precision="3" />
           <Property Name="QSCHEDULEDPUBLI" Type="DateTime" Precision="3" />
           <Property Name="QPUBAFFIDAVITUPLOAD" Type="DateTime" Precision="3" />
+          <Property Name="QHUDOCCLETTERUPLOAD1" Type="DateTime" Precision="3" />
+          <Property Name="QHUDOCCLETTERUPLOAD2" Type="DateTime" Precision="3" />
         </EntityType>
         <EntityContainer Name="ProLawEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="Matters" EntityType="Self.Matters" />
           <EntitySet Name="MattersQFORECLOSUR5" EntityType="Self.MattersQFORECLOSUR5" />
           <EntitySet Name="MattersQFORECLOSUR6" EntityType="Self.MattersQFORECLOSUR6" />
           <EntitySet Name="MattersQFORECLOSUREPRO" EntityType="Self.MattersQFORECLOSUREPRO" />
+          <EntitySet Name="RepositoryChangeLogs" EntityType="ProLawModel.RepositoryChangeLogs" />
         </EntityContainer>
+        <EntityType Name="RepositoryChangeLogs">
+          <Key>
+            <PropertyRef Name="RepositoryChangeLogId" />
+          </Key>
+          <Property Name="RepositoryChangeLogId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="FQAType" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="TableUpdated" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="PrimaryKey" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="ColumnUpdated" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="NewValue" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="OldValue" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Operation" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="CommittedAt" Type="DateTime" Precision="3" />
+          <Property Name="ErrorAt" Type="DateTime" Precision="3" />
+          <Property Name="ErrorNotes" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -559,6 +596,8 @@
           <EntitySetMapping Name="MattersQFORECLOSUREPRO">
             <EntityTypeMapping TypeName="ProLawModel.MattersQFORECLOSUREPRO">
               <MappingFragment StoreEntitySet="MattersQFORECLOSUREPRO">
+                <ScalarProperty Name="QHUDOCCLETTERUPLOAD2" ColumnName="QHUDOCCLETTERUPLOAD2" />
+                <ScalarProperty Name="QHUDOCCLETTERUPLOAD1" ColumnName="QHUDOCCLETTERUPLOAD1" />
                 <ScalarProperty Name="MattersQFORECLOSUREPRO1" ColumnName="MattersQFORECLOSUREPRO" />
                 <ScalarProperty Name="Matters" ColumnName="Matters" />
                 <ScalarProperty Name="QASSIGNMENTORDE" ColumnName="QASSIGNMENTORDE" />
@@ -620,6 +659,23 @@
                 <ScalarProperty Name="QPUBAFFIDAVITRC" ColumnName="QPUBAFFIDAVITRC" />
                 <ScalarProperty Name="QSCHEDULEDPUBLI" ColumnName="QSCHEDULEDPUBLI" />
                 <ScalarProperty Name="QPUBAFFIDAVITUPLOAD" ColumnName="QPUBAFFIDAVITUPLOAD" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="RepositoryChangeLogs">
+            <EntityTypeMapping TypeName="ProLawModel.RepositoryChangeLogs">
+              <MappingFragment StoreEntitySet="RepositoryChangeLogs">
+                <ScalarProperty Name="ErrorNotes" ColumnName="ErrorNotes" />
+                <ScalarProperty Name="ErrorAt" ColumnName="ErrorAt" />
+                <ScalarProperty Name="CommittedAt" ColumnName="CommittedAt" />
+                <ScalarProperty Name="Operation" ColumnName="Operation" />
+                <ScalarProperty Name="OldValue" ColumnName="OldValue" />
+                <ScalarProperty Name="NewValue" ColumnName="NewValue" />
+                <ScalarProperty Name="ColumnUpdated" ColumnName="ColumnUpdated" />
+                <ScalarProperty Name="PrimaryKey" ColumnName="PrimaryKey" />
+                <ScalarProperty Name="TableUpdated" ColumnName="TableUpdated" />
+                <ScalarProperty Name="FQAType" ColumnName="FQAType" />
+                <ScalarProperty Name="RepositoryChangeLogId" ColumnName="RepositoryChangeLogId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

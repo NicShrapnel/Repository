@@ -75,5 +75,7 @@ namespace SimulationExternalProject_DAL
         public Nullable<System.DateTime> QPUBAFFIDAVITRC { get; set; }
         public Nullable<System.DateTime> QSCHEDULEDPUBLI { get; set; }
         public Nullable<System.DateTime> QPUBAFFIDAVITUPLOAD { get; set; }
+        public Nullable<System.DateTime> QHUDOCCLETTERUPLOAD1 { get; set; }
+        public Nullable<System.DateTime> QHUDOCCLETTERUPLOAD2 { get; set; }
     }
 }

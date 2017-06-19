@@ -9,6 +9,7 @@
         <EntityTypeShape EntityType="ProLawModel.MattersQFORECLOSUR5" Width="1.5" PointX="2.75" PointY="0.75" IsExpanded="true" />
         <EntityTypeShape EntityType="ProLawModel.MattersQFORECLOSUR6" Width="1.5" PointX="4.75" PointY="0.75" IsExpanded="true" />
         <EntityTypeShape EntityType="ProLawModel.MattersQFORECLOSUREPRO" Width="1.5" PointX="4.75" PointY="5.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ProLawModel.RepositoryChangeLogs" Width="1.5" PointX="7.375" PointY="0.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

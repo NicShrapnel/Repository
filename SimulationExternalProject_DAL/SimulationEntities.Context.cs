@@ -29,5 +29,6 @@ namespace SimulationExternalProject_DAL
         public virtual DbSet<MattersQFORECLOSUR5> MattersQFORECLOSUR5 { get; set; }
         public virtual DbSet<MattersQFORECLOSUR6> MattersQFORECLOSUR6 { get; set; }
         public virtual DbSet<MattersQFORECLOSUREPRO> MattersQFORECLOSUREPRO { get; set; }
+        public virtual DbSet<RepositoryChangeLogs> RepositoryChangeLogs { get; set; }
     }
 }
