@@ -66,6 +66,33 @@
     <Compile Include="MattersQFORECLOSUREPRO.cs">
       <DependentUpon>SimulationEntities.tt</DependentUpon>
     </Compile>
+    <Compile Include="PEAK_XMLFileImports.cs">
+      <DependentUpon>ProlawIntegrationModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PEAK_XMLImportAttachmentLog.cs">
+      <DependentUpon>ProlawIntegrationModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PEAK_XMLImportLog.cs">
+      <DependentUpon>ProlawIntegrationModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PEAK_XMLImportProductMappings.cs">
+      <DependentUpon>ProlawIntegrationModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ProlawIntegrationModel.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ProlawIntegrationModel.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ProlawIntegrationModel.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ProlawIntegrationModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ProlawIntegrationModel.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ProlawIntegrationModel.edmx</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RepositoryChangeLogs.cs">
       <DependentUpon>SimulationEntities.tt</DependentUpon>
@@ -95,11 +122,28 @@
   <ItemGroup>
     <None Include="App.Config" />
     <None Include="packages.config" />
+    <EntityDeploy Include="ProlawIntegrationModel.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>ProlawIntegrationModel.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <None Include="ProlawIntegrationModel.edmx.diagram">
+      <DependentUpon>ProlawIntegrationModel.edmx</DependentUpon>
+    </None>
     <None Include="SimulationEntities.edmx.diagram">
       <DependentUpon>SimulationEntities.edmx</DependentUpon>
     </None>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="ProlawIntegrationModel.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>ProlawIntegrationModel.edmx</DependentUpon>
+      <LastGenOutput>ProlawIntegrationModel.Context.cs</LastGenOutput>
+    </Content>
+    <Content Include="ProlawIntegrationModel.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>ProlawIntegrationModel.edmx</DependentUpon>
+      <LastGenOutput>ProlawIntegrationModel.cs</LastGenOutput>
+    </Content>
     <Content Include="SimulationEntities.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>SimulationEntities.Context.cs</LastGenOutput>

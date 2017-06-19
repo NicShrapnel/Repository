@@ -1,0 +1,320 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="ProLawIntegrationModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="PEAK_XMLFileImports">
+          <Key>
+            <PropertyRef Name="FileImportID" />
+          </Key>
+          <Property Name="FileImportID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="PeakMatterID" Type="varchar" MaxLength="40" />
+          <Property Name="MatterID" Type="varchar" MaxLength="40" />
+          <Property Name="XMLFileType" Type="varchar" MaxLength="40" />
+          <Property Name="FilePath" Type="varchar" MaxLength="255" />
+          <Property Name="ImportedAt" Type="datetime" />
+          <Property Name="ErrorAt" Type="datetime" />
+          <Property Name="SystemNotes" Type="varchar" MaxLength="255" />
+          <Property Name="Product" Type="varchar" MaxLength="255" />
+          <Property Name="ProductClass" Type="varchar" MaxLength="255" />
+          <Property Name="UpdatedBy" Type="varchar" MaxLength="255" />
+          <Property Name="RetryCounter" Type="int" />
+          <Property Name="LastAttemptMade" Type="datetime" />
+          <Property Name="SuccessfullyDeserialized" Type="datetime" />
+        </EntityType>
+        <EntityType Name="PEAK_XMLImportAttachmentLog">
+          <Key>
+            <PropertyRef Name="ImportAttachmentID" />
+          </Key>
+          <Property Name="ImportAttachmentID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="FileImportID" Type="int" Nullable="false" />
+          <Property Name="DocType" Type="varchar" MaxLength="255" />
+          <Property Name="Description" Type="varchar" MaxLength="255" />
+          <Property Name="AttachmentFileType" Type="varchar" MaxLength="40" />
+          <Property Name="FilePath" Type="varchar" MaxLength="255" />
+          <Property Name="ImportedAt" Type="datetime" />
+          <Property Name="ErrorAt" Type="datetime" />
+          <Property Name="SystemNotes" Type="varchar" MaxLength="400" />
+        </EntityType>
+        <EntityType Name="PEAK_XMLImportLog">
+          <Key>
+            <PropertyRef Name="ImportID" />
+          </Key>
+          <Property Name="ImportID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="FileImportID" Type="int" Nullable="false" />
+          <Property Name="TableUpdated" Type="varchar" MaxLength="100" />
+          <Property Name="PrimaryKeyValue" Type="varchar" MaxLength="40" />
+          <Property Name="ColumnUpdated" Type="varchar" MaxLength="100" />
+          <Property Name="OldValue" Type="varchar(max)" />
+          <Property Name="NewValue" Type="varchar(max)" />
+          <Property Name="ImportedAt" Type="datetime" />
+          <Property Name="ErrorAt" Type="datetime" />
+          <Property Name="SystemNotes" Type="varchar" MaxLength="255" />
+        </EntityType>
+        <EntityType Name="PEAK_XMLImportProductMappings">
+          <Key>
+            <PropertyRef Name="ImportMapID" />
+          </Key>
+          <Property Name="ImportMapID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ProductName" Type="varchar" MaxLength="255" />
+          <Property Name="IsDIL" Type="bit" />
+          <Property Name="IsForeclosure" Type="bit" />
+          <Property Name="IsConveyance" Type="bit" />
+          <Property Name="IsSkipTrace" Type="bit" />
+          <Property Name="IsGAL" Type="bit" />
+          <Property Name="IsGAP" Type="bit" />
+          <Property Name="IsCommercial" Type="bit" />
+        </EntityType>
+        <Association Name="FK__PEAK_XMLI__FileI__3C280606">
+          <End Role="PEAK_XMLFileImports" Type="Self.PEAK_XMLFileImports" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="PEAK_XMLImportLog" Type="Self.PEAK_XMLImportLog" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PEAK_XMLFileImports">
+              <PropertyRef Name="FileImportID" />
+            </Principal>
+            <Dependent Role="PEAK_XMLImportLog">
+              <PropertyRef Name="FileImportID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__PEAK_XMLI__FileI__3E104E78">
+          <End Role="PEAK_XMLFileImports" Type="Self.PEAK_XMLFileImports" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="PEAK_XMLImportAttachmentLog" Type="Self.PEAK_XMLImportAttachmentLog" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PEAK_XMLFileImports">
+              <PropertyRef Name="FileImportID" />
+            </Principal>
+            <Dependent Role="PEAK_XMLImportAttachmentLog">
+              <PropertyRef Name="FileImportID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="ProLawIntegrationModelStoreContainer">
+          <EntitySet Name="PEAK_XMLFileImports" EntityType="Self.PEAK_XMLFileImports" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PEAK_XMLImportAttachmentLog" EntityType="Self.PEAK_XMLImportAttachmentLog" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PEAK_XMLImportLog" EntityType="Self.PEAK_XMLImportLog" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PEAK_XMLImportProductMappings" EntityType="Self.PEAK_XMLImportProductMappings" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK__PEAK_XMLI__FileI__3C280606" Association="Self.FK__PEAK_XMLI__FileI__3C280606">
+            <End Role="PEAK_XMLFileImports" EntitySet="PEAK_XMLFileImports" />
+            <End Role="PEAK_XMLImportLog" EntitySet="PEAK_XMLImportLog" />
+          </AssociationSet>
+          <AssociationSet Name="FK__PEAK_XMLI__FileI__3E104E78" Association="Self.FK__PEAK_XMLI__FileI__3E104E78">
+            <End Role="PEAK_XMLFileImports" EntitySet="PEAK_XMLFileImports" />
+            <End Role="PEAK_XMLImportAttachmentLog" EntitySet="PEAK_XMLImportAttachmentLog" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="ProLawIntegrationModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="PEAK_XMLFileImports">
+          <Key>
+            <PropertyRef Name="FileImportID" />
+          </Key>
+          <Property Name="FileImportID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="PeakMatterID" Type="String" MaxLength="40" FixedLength="false" Unicode="false" />
+          <Property Name="MatterID" Type="String" MaxLength="40" FixedLength="false" Unicode="false" />
+          <Property Name="XMLFileType" Type="String" MaxLength="40" FixedLength="false" Unicode="false" />
+          <Property Name="FilePath" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="ImportedAt" Type="DateTime" Precision="3" />
+          <Property Name="ErrorAt" Type="DateTime" Precision="3" />
+          <Property Name="SystemNotes" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="Product" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="ProductClass" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="UpdatedBy" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="RetryCounter" Type="Int32" />
+          <Property Name="LastAttemptMade" Type="DateTime" Precision="3" />
+          <Property Name="SuccessfullyDeserialized" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="PEAK_XMLImportLog" Relationship="Self.FK__PEAK_XMLI__FileI__3C280606" FromRole="PEAK_XMLFileImports" ToRole="PEAK_XMLImportLog" />
+          <NavigationProperty Name="PEAK_XMLImportAttachmentLog" Relationship="Self.FK__PEAK_XMLI__FileI__3E104E78" FromRole="PEAK_XMLFileImports" ToRole="PEAK_XMLImportAttachmentLog" />
+        </EntityType>
+        <EntityType Name="PEAK_XMLImportAttachmentLog">
+          <Key>
+            <PropertyRef Name="ImportAttachmentID" />
+          </Key>
+          <Property Name="ImportAttachmentID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="FileImportID" Type="Int32" Nullable="false" />
+          <Property Name="DocType" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="Description" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="AttachmentFileType" Type="String" MaxLength="40" FixedLength="false" Unicode="false" />
+          <Property Name="FilePath" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="ImportedAt" Type="DateTime" Precision="3" />
+          <Property Name="ErrorAt" Type="DateTime" Precision="3" />
+          <Property Name="SystemNotes" Type="String" MaxLength="400" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="PEAK_XMLFileImports" Relationship="Self.FK__PEAK_XMLI__FileI__3E104E78" FromRole="PEAK_XMLImportAttachmentLog" ToRole="PEAK_XMLFileImports" />
+        </EntityType>
+        <EntityType Name="PEAK_XMLImportLog">
+          <Key>
+            <PropertyRef Name="ImportID" />
+          </Key>
+          <Property Name="ImportID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="FileImportID" Type="Int32" Nullable="false" />
+          <Property Name="TableUpdated" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="PrimaryKeyValue" Type="String" MaxLength="40" FixedLength="false" Unicode="false" />
+          <Property Name="ColumnUpdated" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="OldValue" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="NewValue" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="ImportedAt" Type="DateTime" Precision="3" />
+          <Property Name="ErrorAt" Type="DateTime" Precision="3" />
+          <Property Name="SystemNotes" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="PEAK_XMLFileImports" Relationship="Self.FK__PEAK_XMLI__FileI__3C280606" FromRole="PEAK_XMLImportLog" ToRole="PEAK_XMLFileImports" />
+        </EntityType>
+        <EntityType Name="PEAK_XMLImportProductMappings">
+          <Key>
+            <PropertyRef Name="ImportMapID" />
+          </Key>
+          <Property Name="ImportMapID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ProductName" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="IsDIL" Type="Boolean" />
+          <Property Name="IsForeclosure" Type="Boolean" />
+          <Property Name="IsConveyance" Type="Boolean" />
+          <Property Name="IsSkipTrace" Type="Boolean" />
+          <Property Name="IsGAL" Type="Boolean" />
+          <Property Name="IsGAP" Type="Boolean" />
+          <Property Name="IsCommercial" Type="Boolean" />
+        </EntityType>
+        <Association Name="FK__PEAK_XMLI__FileI__3C280606">
+          <End Role="PEAK_XMLFileImports" Type="Self.PEAK_XMLFileImports" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="PEAK_XMLImportLog" Type="Self.PEAK_XMLImportLog" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PEAK_XMLFileImports">
+              <PropertyRef Name="FileImportID" />
+            </Principal>
+            <Dependent Role="PEAK_XMLImportLog">
+              <PropertyRef Name="FileImportID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__PEAK_XMLI__FileI__3E104E78">
+          <End Role="PEAK_XMLFileImports" Type="Self.PEAK_XMLFileImports" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="PEAK_XMLImportAttachmentLog" Type="Self.PEAK_XMLImportAttachmentLog" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PEAK_XMLFileImports">
+              <PropertyRef Name="FileImportID" />
+            </Principal>
+            <Dependent Role="PEAK_XMLImportAttachmentLog">
+              <PropertyRef Name="FileImportID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="ProLawIntegrationEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="PEAK_XMLFileImports" EntityType="Self.PEAK_XMLFileImports" />
+          <EntitySet Name="PEAK_XMLImportAttachmentLog" EntityType="Self.PEAK_XMLImportAttachmentLog" />
+          <EntitySet Name="PEAK_XMLImportLog" EntityType="Self.PEAK_XMLImportLog" />
+          <EntitySet Name="PEAK_XMLImportProductMappings" EntityType="Self.PEAK_XMLImportProductMappings" />
+          <AssociationSet Name="FK__PEAK_XMLI__FileI__3C280606" Association="Self.FK__PEAK_XMLI__FileI__3C280606">
+            <End Role="PEAK_XMLFileImports" EntitySet="PEAK_XMLFileImports" />
+            <End Role="PEAK_XMLImportLog" EntitySet="PEAK_XMLImportLog" />
+          </AssociationSet>
+          <AssociationSet Name="FK__PEAK_XMLI__FileI__3E104E78" Association="Self.FK__PEAK_XMLI__FileI__3E104E78">
+            <End Role="PEAK_XMLFileImports" EntitySet="PEAK_XMLFileImports" />
+            <End Role="PEAK_XMLImportAttachmentLog" EntitySet="PEAK_XMLImportAttachmentLog" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="ProLawIntegrationModelStoreContainer" CdmEntityContainer="ProLawIntegrationEntities">
+          <EntitySetMapping Name="PEAK_XMLFileImports">
+            <EntityTypeMapping TypeName="ProLawIntegrationModel.PEAK_XMLFileImports">
+              <MappingFragment StoreEntitySet="PEAK_XMLFileImports">
+                <ScalarProperty Name="FileImportID" ColumnName="FileImportID" />
+                <ScalarProperty Name="PeakMatterID" ColumnName="PeakMatterID" />
+                <ScalarProperty Name="MatterID" ColumnName="MatterID" />
+                <ScalarProperty Name="XMLFileType" ColumnName="XMLFileType" />
+                <ScalarProperty Name="FilePath" ColumnName="FilePath" />
+                <ScalarProperty Name="ImportedAt" ColumnName="ImportedAt" />
+                <ScalarProperty Name="ErrorAt" ColumnName="ErrorAt" />
+                <ScalarProperty Name="SystemNotes" ColumnName="SystemNotes" />
+                <ScalarProperty Name="Product" ColumnName="Product" />
+                <ScalarProperty Name="ProductClass" ColumnName="ProductClass" />
+                <ScalarProperty Name="UpdatedBy" ColumnName="UpdatedBy" />
+                <ScalarProperty Name="RetryCounter" ColumnName="RetryCounter" />
+                <ScalarProperty Name="LastAttemptMade" ColumnName="LastAttemptMade" />
+                <ScalarProperty Name="SuccessfullyDeserialized" ColumnName="SuccessfullyDeserialized" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PEAK_XMLImportAttachmentLog">
+            <EntityTypeMapping TypeName="ProLawIntegrationModel.PEAK_XMLImportAttachmentLog">
+              <MappingFragment StoreEntitySet="PEAK_XMLImportAttachmentLog">
+                <ScalarProperty Name="ImportAttachmentID" ColumnName="ImportAttachmentID" />
+                <ScalarProperty Name="FileImportID" ColumnName="FileImportID" />
+                <ScalarProperty Name="DocType" ColumnName="DocType" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="AttachmentFileType" ColumnName="AttachmentFileType" />
+                <ScalarProperty Name="FilePath" ColumnName="FilePath" />
+                <ScalarProperty Name="ImportedAt" ColumnName="ImportedAt" />
+                <ScalarProperty Name="ErrorAt" ColumnName="ErrorAt" />
+                <ScalarProperty Name="SystemNotes" ColumnName="SystemNotes" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PEAK_XMLImportLog">
+            <EntityTypeMapping TypeName="ProLawIntegrationModel.PEAK_XMLImportLog">
+              <MappingFragment StoreEntitySet="PEAK_XMLImportLog">
+                <ScalarProperty Name="ImportID" ColumnName="ImportID" />
+                <ScalarProperty Name="FileImportID" ColumnName="FileImportID" />
+                <ScalarProperty Name="TableUpdated" ColumnName="TableUpdated" />
+                <ScalarProperty Name="PrimaryKeyValue" ColumnName="PrimaryKeyValue" />
+                <ScalarProperty Name="ColumnUpdated" ColumnName="ColumnUpdated" />
+                <ScalarProperty Name="OldValue" ColumnName="OldValue" />
+                <ScalarProperty Name="NewValue" ColumnName="NewValue" />
+                <ScalarProperty Name="ImportedAt" ColumnName="ImportedAt" />
+                <ScalarProperty Name="ErrorAt" ColumnName="ErrorAt" />
+                <ScalarProperty Name="SystemNotes" ColumnName="SystemNotes" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PEAK_XMLImportProductMappings">
+            <EntityTypeMapping TypeName="ProLawIntegrationModel.PEAK_XMLImportProductMappings">
+              <MappingFragment StoreEntitySet="PEAK_XMLImportProductMappings">
+                <ScalarProperty Name="ImportMapID" ColumnName="ImportMapID" />
+                <ScalarProperty Name="ProductName" ColumnName="ProductName" />
+                <ScalarProperty Name="IsDIL" ColumnName="IsDIL" />
+                <ScalarProperty Name="IsForeclosure" ColumnName="IsForeclosure" />
+                <ScalarProperty Name="IsConveyance" ColumnName="IsConveyance" />
+                <ScalarProperty Name="IsSkipTrace" ColumnName="IsSkipTrace" />
+                <ScalarProperty Name="IsGAL" ColumnName="IsGAL" />
+                <ScalarProperty Name="IsGAP" ColumnName="IsGAP" />
+                <ScalarProperty Name="IsCommercial" ColumnName="IsCommercial" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

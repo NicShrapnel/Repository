@@ -11,6 +11,29 @@ namespace Repository_UnitTests
     public class Repository_UnitTests
     {
         [TestMethod]
+        public void TestLoggingToDifferentConnectionString()
+        {
+            using (var pctx = new ProLawEntities())
+            using (var ctx = new ProLawIntegrationEntities())
+            {
+                var r = new Repository(pctx,
+                    EntityFramework_Repository.ConnectionFactory.ConnectionMethod.CurrentContextConnection,
+                    null,
+                    false,
+                    ctx.Database.Connection);
+                r.QueueContextChange(new MattersQFORECLOSUR6
+                {
+                    MattersQFORECLOSUR61 = "RepoTest",
+                    MattersQFORECLOSUREPRO = "RepoTest",
+                    QTOTITLETYPE = "RepoTest"
+                });
+                r.CommitContextChanges();
+                Assert.IsNotNull(pctx.MattersQFORECLOSUR6.Where(f => f.MattersQFORECLOSUREPRO == "RepoTest"));
+
+                r.RollBackAllChanges();
+            }
+        }
+        [TestMethod]
         public void TestRollbackQueueAll()
         {
             var r = new Repository();
